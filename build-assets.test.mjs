@@ -20,7 +20,9 @@ beforeAll(() => {
 
 afterAll(() => {
   fs.rmSync(fixture, { recursive: true, force: true });
-  fs.rmSync(target, { recursive: true, force: true });
+  // hanya bersihkan jejak fixture, jangan seluruh public/gambar
+  fs.rmSync(path.join(target, "a.svg"), { force: true });
+  fs.rmSync(path.join(target, "sub"), { recursive: true, force: true });
 });
 
 it("menyalin gambar guru aktif (rekursif) ke public/gambar", () => {
