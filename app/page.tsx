@@ -2,6 +2,7 @@ import Link from "next/link";
 import { activeGuru, getSettings, listMateri } from "@/lib/content";
 import SiteHeader from "@/components/site-header";
 import MateriCard from "@/components/materi-card";
+import { FadeIn, Stagger } from "@/components/motion";
 
 export default function Home() {
   const guru = activeGuru();
@@ -12,10 +13,12 @@ export default function Home() {
     <div className="min-h-dvh">
       <SiteHeader />
       <main className="mx-auto max-w-2xl px-5 pt-8 pb-16">
-        <h1 className="text-2xl font-extrabold tracking-tight">{s.judulSitus}</h1>
-        <p className="mt-1.5 text-muted-foreground text-[0.9rem]">
-          Materi {s.mapel ? `mapel ${s.mapel}` : ""} — {s.deskripsi}
-        </p>
+        <FadeIn>
+          <h1 className="text-2xl font-extrabold tracking-tight">{s.judulSitus}</h1>
+          <p className="mt-1.5 text-muted-foreground text-[0.9rem]">
+            Materi {s.mapel ? `mapel ${s.mapel}` : ""} — {s.deskripsi}
+          </p>
+        </FadeIn>
 
         {daftar.length === 0 ? (
           <div className="mt-10 rounded-xl border border-dashed border-border p-8 text-center">
@@ -25,11 +28,11 @@ export default function Home() {
             </p>
           </div>
         ) : (
-          <div className="mt-7 flex flex-col gap-3.5">
+          <Stagger>
             {daftar.map((m) => (
               <MateriCard key={m.slug} materi={m} />
             ))}
-          </div>
+          </Stagger>
         )}
       </main>
     </div>
