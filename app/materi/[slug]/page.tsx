@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 import { activeGuru, getMateri, getSettings, listMateri, type Block } from "@/lib/content";
 import SiteHeader from "@/components/site-header";
+import SiteFooter from "@/components/site-footer";
 import YouTubeEmbed from "@/components/youtube-embed";
 import { FadeIn } from "@/components/motion";
 
@@ -29,27 +32,44 @@ export default async function HalamanMateri({ params }: Props) {
   const s = getSettings(guru);
 
   return (
-    <div className="min-h-dvh">
+    <div className="flex min-h-dvh flex-col">
       <SiteHeader />
-      <main className="mx-auto max-w-2xl px-5 pt-10 pb-16">
+      <main className="mx-auto w-full max-w-2xl flex-1 px-5 pt-8 pb-14 sm:px-6">
+        <Link
+          href="/"
+          className="inline-flex min-h-11 items-center gap-1.5 text-[0.8rem] font-medium text-muted-foreground no-underline transition-colors hover:text-primary"
+        >
+          <ChevronLeft className="size-4" />
+          Semua materi
+        </Link>
+
         <FadeIn>
-          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-            {s.namaGuru}
-          </p>
-          <h1 className="mt-2 text-[1.75rem] font-extrabold leading-tight tracking-tight">
-            {meta.judul}
-          </h1>
-          {meta.tanggal ? (
-            <p className="mt-2 text-sm text-muted-foreground">{meta.tanggal}</p>
-          ) : null}
+          <div className="mt-4 pb-8">
+            <p className="text-[0.75rem] font-semibold uppercase tracking-wider text-primary">
+              {s.namaGuru}
+            </p>
+            <h1 className="mt-1.5 text-[1.9rem] font-extrabold leading-[1.15] tracking-tighter sm:text-[2.25rem]">
+              {meta.judul}
+            </h1>
+            {meta.tanggal ? (
+              <p className="mt-3 text-xs tabular-nums text-muted-foreground">
+                {s.mapel ? `${s.mapel} · ` : ""}
+                {meta.tanggal}
+              </p>
+            ) : null}
+          </div>
+          <hr className="border-border/70" />
         </FadeIn>
 
-        <div className="prose prose-neutral mt-8 max-w-none prose-headings:tracking-tight prose-headings:font-bold prose-img:rounded-xl">
-          {blocks.map((b, i) => (
-            <BlockSatu key={i} block={b} judul={meta.judul} />
-          ))}
-        </div>
+        <FadeIn>
+          <div className="prose prose-neutral mt-8 max-w-none dark:prose-invert prose-headings:tracking-tight prose-headings:font-bold">
+            {blocks.map((b, i) => (
+              <BlockSatu key={i} block={b} judul={meta.judul} />
+            ))}
+          </div>
+        </FadeIn>
       </main>
+      <SiteFooter />
     </div>
   );
 }

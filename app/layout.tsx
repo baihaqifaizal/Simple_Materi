@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Geist } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { activeGuru, getSettings } from "@/lib/content";
 import { temaValid } from "@/lib/theme";
 import "./globals.css";
-import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+// Pilihan konten-pertama: humanis, enak dibaca untuk materi sekolah.
+const fontSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = getSettings(activeGuru());
@@ -21,12 +25,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const s = getSettings(activeGuru());
+  // Tanpa flash: keputusan gelap/terang dicapai sebelum CSS muat.
+  const scriptNoFlash = `(function(){try{var t=localStorage.getItem('tema');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
   return (
     <html
       lang="id"
       data-tema={temaValid(s.temaWarna)}
-      className={cn("font-sans", geist.variable)}
+      className={`${fontSans.variable} font-sans`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: scriptNoFlash }} />
+      </head>
       <body>{children}</body>
     </html>
   );

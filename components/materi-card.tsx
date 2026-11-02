@@ -1,21 +1,26 @@
 import Link from "next/link";
 import type { MateriMeta } from "@/lib/content";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
+/** Daftar materi: kartu ringan, hairline, tanpa hiasan berlebihan. */
 export default function MateriCard({ materi }: { materi: MateriMeta }) {
   return (
-    <Link href={`/materi/${materi.slug}`} className="block no-underline transition-transform duration-200 hover:-translate-y-0.5">
-      <Card className="gap-2 border-border/70 shadow-none transition-colors hover:border-primary/40 hover:bg-accent/40">
-        <CardHeader>
-          <CardTitle className="text-base leading-snug">{materi.judul}</CardTitle>
-          <CardDescription className="line-clamp-3 text-[0.85rem] leading-relaxed">
-            {materi.ringkasan}
-          </CardDescription>
-          {materi.tanggal ? (
-            <span className="text-xs text-muted-foreground">{materi.tanggal}</span>
-          ) : null}
-        </CardHeader>
-      </Card>
+    <Link
+      href={`/materi/${materi.slug}`}
+      className="group -mx-2 block rounded-xl px-2 py-4 no-underline transition-colors hover:bg-accent/60 sm:-mx-4 sm:px-4"
+    >
+      <div className="flex items-baseline justify-between gap-4">
+        <h2 className="text-[1.05rem] font-bold tracking-tight group-hover:text-primary transition-colors">
+          {materi.judul}
+        </h2>
+        <span className="text-[0.7rem] font-medium text-primary/70">
+          Baca
+        </span>
+      </div>
+      {materi.ringkasan ? (
+        <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+          {materi.ringkasan}
+        </p>
+      ) : null}
     </Link>
   );
 }

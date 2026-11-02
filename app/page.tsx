@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { activeGuru, getSettings, listMateri } from "@/lib/content";
 import SiteHeader from "@/components/site-header";
 import MateriCard from "@/components/materi-card";
+import SiteFooter from "@/components/site-footer";
 import { FadeIn, Stagger } from "@/components/motion";
 
 export default function Home() {
@@ -10,14 +10,24 @@ export default function Home() {
   const daftar = listMateri(guru);
 
   return (
-    <div className="min-h-dvh">
+    <div className="flex min-h-dvh flex-col">
       <SiteHeader />
-      <main className="mx-auto max-w-2xl px-5 pt-8 pb-16">
+      <main className="mx-auto w-full max-w-2xl flex-1 px-5 pt-10 pb-14 sm:px-6">
         <FadeIn>
-          <h1 className="text-2xl font-extrabold tracking-tight">{s.judulSitus}</h1>
-          <p className="mt-1.5 text-muted-foreground text-[0.9rem]">
-            Materi {s.mapel ? `mapel ${s.mapel}` : ""} — {s.deskripsi}
-          </p>
+          <div className="pb-8">
+            <h1 className="text-[1.9rem] font-extrabold leading-[1.15] tracking-tighter sm:text-[2.25rem]">
+              {s.judulSitus}
+            </h1>
+            {s.deskripsi ? (
+              <p className="mt-3 max-w-lg text-[0.95rem] leading-relaxed text-muted-foreground">
+                {s.deskripsi}
+              </p>
+            ) : null}
+            <p className="mt-5 text-xs font-medium tabular-nums text-muted-foreground">
+              {daftar.length ? `${daftar.length} materi` : ""}
+            </p>
+          </div>
+          <hr className="border-border/70" />
         </FadeIn>
 
         {daftar.length === 0 ? (
@@ -28,13 +38,12 @@ export default function Home() {
             </p>
           </div>
         ) : (
-          <Stagger>
-            {daftar.map((m) => (
-              <MateriCard key={m.slug} materi={m} />
-            ))}
-          </Stagger>
+          <div className="mt-6">
+            <Stagger>{daftar.map((m) => <MateriCard key={m.slug} materi={m} />)}</Stagger>
+          </div>
         )}
       </main>
+      <SiteFooter />
     </div>
   );
 }
