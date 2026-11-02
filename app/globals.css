@@ -144,3 +144,49 @@
 /* ===== Tipografi mobile-first ===== */
 html { font-size: 17px; }
 @media (min-width: 768px) { html { font-size: 18px; } }
+
+/* ===== Prose & keterbacaan (Task 7) ===== */
+main {
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+}
+p, h1, h2, h3, h4 {
+  text-wrap: pretty;
+}
+.prose :is(h1, h2, h3) {
+  letter-spacing: -0.02em;
+}
+.prose h1 { font-size: clamp(1.4rem, 4.5vw, 1.75rem); }
+.prose h2 { font-size: clamp(1.2rem, 3.8vw, 1.45rem); margin-top: 2.2em; }
+.prose h3 { margin-top: 1.8em; }
+.prose img {
+  border-radius: 0.9rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 6%);
+  margin-top: 0;
+}
+.prose table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+.prose pre {
+  background: var(--muted);
+  border-radius: 0.75rem;
+  padding: 1rem 1.1rem;
+  font-size: 0.85rem;
+}
+.prose a {
+  color: var(--primary);
+  font-weight: 500;
+  text-underline-offset: 3px;
+}
+.prose blockquote {
+  border-left: 3px solid var(--primary);
+  background: var(--accent);
+  border-radius: 0 0.75rem 0.75rem 0;
+  padding-block: 0.5rem;
+  font-style: normal;
+}
+.prose hr {
+  border-color: var(--border);
+  margin-block: 2.5em;
+}

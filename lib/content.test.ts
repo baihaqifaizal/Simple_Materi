@@ -81,6 +81,16 @@ describe("getMateri", () => {
   it("materi tak dikenal → null", () => {
     expect(getMateri("boy", "tak-ada")).toBeNull();
   });
+
+  it("heading # pertama tidak dobel: tidak muncul di blok html", () => {
+    for (const slug of ["sistem-tata-surya", "siapa-pak-boy"]) {
+      const materi = getMateri("boy", slug)!;
+      const semua = materi.blocks
+        .map((b) => (b.type === "html" ? b.html : ""))
+        .join("");
+      expect(semua).not.toMatch(/<h1[\s>]/);
+    }
+  });
 });
 
 describe("getSettings", () => {

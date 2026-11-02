@@ -41,6 +41,17 @@ function judulDariDokumen(isi: string): string {
   return "";
 }
 
+/** Heading H1 pertama = judul halaman; jangan dobel di isi. */
+function pangkasHeadingPertama(isi: string): string {
+  const baris = isi.split("\n");
+  const idx = baris.findIndex((b) => b.trim() !== "");
+  if (idx >= 0 && /^#\s+/.test(baris[idx].trim())) {
+    baris.splice(idx, 1);
+    return baris.join("\n");
+  }
+  return isi;
+}
+
 function ringkasanDariDokumen(isi: string): string {
   const paragraf = isi
     .split(/\n\s*\n/)
@@ -123,7 +134,9 @@ export function getMateri(
   if (!namaFile) return null;
   const raw = fs.readFileSync(path.join(dir, namaFile), "utf8");
   const { data, content } = matter(raw);
-  const diproses = preprocessGambar(preprocessYoutube(content));
+  const diproses = preprocessGambar(
+    preprocessYoutube(pangkasHeadingPertama(content))
+  );
   const html = marked.parse(diproses, { async: false }) as string;
   const blocks = pecahBlocks(html);
   return {
