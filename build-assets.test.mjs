@@ -15,7 +15,9 @@ beforeAll(() => {
   );
   fs.writeFileSync(path.join(fixture, "gambar", "a.svg"), "<svg/>", "utf8");
   fs.writeFileSync(path.join(fixture, "gambar", "sub", "b.png"), "xx", "utf8");
-  fs.rmSync(target, { recursive: true, force: true });
+  // hanya bersihkan target milik fixture, jangan seluruh public/gambar
+  fs.rmSync(path.join(target, "a.svg"), { force: true });
+  fs.rmSync(path.join(target, "sub"), { recursive: true, force: true });
 });
 
 afterAll(() => {
