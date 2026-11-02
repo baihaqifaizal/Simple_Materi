@@ -110,7 +110,7 @@ const server = http.createServer(async (req, res) => {
         namaGuru: body.namaGuru || id,
         judulSitus: `Materi Pembelajaran Pak ${body.namaGuru || id}`,
         deskripsi: `Portal materi dan tugas siswa untuk pelajaran Pak ${body.namaGuru || id}`,
-        fotoProfil: "profile.svg",
+        fotoProfil: "profile.jpg",
         pemberitahuan: body.pemberitahuan || "Selamat datang siswa-siswi! Silakan pelajari materi yang tersedia.",
         temaWarna: body.temaWarna || "biru",
         pelajaran: [
@@ -129,7 +129,7 @@ const server = http.createServer(async (req, res) => {
       fs.writeFileSync(path.join(targetDir, "settings.json"), JSON.stringify(settings, null, 2), "utf8");
 
       const sampleSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><rect width="300" height="300" fill="#FFE500" stroke="#000" stroke-width="8"/><circle cx="150" cy="115" r="55" fill="#3B82F6" stroke="#000" stroke-width="8"/><path d="M70,260 C70,195 110,180 150,180 C190,180 230,195 230,260" fill="#FF5252" stroke="#000" stroke-width="8"/></svg>`;
-      fs.writeFileSync(path.join(targetDir, "gambar", "profile.svg"), sampleSvg, "utf8");
+      fs.writeFileSync(path.join(targetDir, "gambar", "profile.jpg"), sampleSvg, "utf8");
 
       const sampleMd = `# Pengenalan Materi\n\nSelamat datang di materi pembelajaran.\n\n## Tujuan Pembelajaran\n1. Memahami materi dasar.\n\n:::youtube dQw4w9WgXcQ\n`;
       fs.writeFileSync(path.join(targetDir, "md", "pengenalan.md"), sampleMd, "utf8");
@@ -269,6 +269,23 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // 10. POST /api/deploy (Build & Deploy ke Cloudflare Pages)
+  if (req.method === "POST" && pathname === "/api/deploy") {
+    try {
+      exec("node build-all.mjs && npx wrangler pages deploy dist --project-name=\"simple-materi\" --branch=\"main\" --commit-dirty=true", (err, stdout, stderr) => {
+        if (err) {
+          console.error("[Deploy Error]", err, stderr);
+          return sendJson(res, 500, { success: false, error: err.message || stderr });
+        }
+        console.log("[Deploy Output]", stdout);
+        return sendJson(res, 200, { success: true, message: "Deploy ke Cloudflare Pages berhasil!", output: stdout });
+      });
+      return;
+    } catch (err) {
+      return sendJson(res, 500, { success: false, error: err.message });
+    }
+  }
+
   // --- DASHBOARD UI ---
   if (pathname === "/" || pathname === "/dashboard") {
     const html = getDashboardHtml();
@@ -313,9 +330,14 @@ function getDashboardHtml() {
       <h1 class="text-2xl sm:text-3xl font-black mt-2">Pusat Kelola Guru & Materi</h1>
       <p class="text-sm font-semibold text-gray-600">Kelola informasi guru, rombel pelajaran, dan modul materi secara visual.</p>
     </div>
-    <button onclick="openTambahGuruModal()" class="neu-btn bg-[#3B82F6] text-white px-5 py-2.5 rounded-lg flex items-center gap-2 text-sm">
-      + Tambah Guru Baru
-    </button>
+    <div class="flex flex-wrap items-center gap-3">
+      <button id="btnGlobalDeploy" onclick="triggerDeploy()" class="neu-btn bg-[#F97316] text-white px-5 py-2.5 rounded-lg flex items-center gap-2 text-sm font-black shadow-md hover:bg-[#EA580C]">
+        🚀 Simpan & Deploy Sekarang
+      </button>
+      <button onclick="openTambahGuruModal()" class="neu-btn bg-[#3B82F6] text-white px-5 py-2.5 rounded-lg flex items-center gap-2 text-sm">
+        + Tambah Guru Baru
+      </button>
+    </div>
   </header>
 
   <!-- Main Content Grid -->
@@ -353,9 +375,14 @@ function getDashboardHtml() {
               <h3 class="font-black text-lg">Profil Guru & Pelajaran (<span id="activeGuruTitle"></span>)</h3>
               <p class="text-xs text-gray-500 font-semibold">Ubah info guru, tambah/hapus pelajaran, dan kelola materi siswa.</p>
             </div>
-            <button onclick="saveGuiSettings()" class="neu-btn bg-[#4ADE80] px-4 py-2 rounded-md text-xs flex items-center gap-1.5">
-              💾 Simpan Perubahan
-            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="saveGuiSettings()" class="neu-btn bg-[#4ADE80] px-4 py-2 rounded-md text-xs flex items-center gap-1.5 font-black">
+                💾 Simpan
+              </button>
+              <button onclick="saveAndDeploy()" class="neu-btn bg-[#F97316] text-white px-4 py-2 rounded-md text-xs flex items-center gap-1.5 font-black">
+                🚀 Simpan & Deploy
+              </button>
+            </div>
           </div>
 
           <!-- Bagian 1: Identitas Guru (Accordion Expand/Collapse - Default Collapse) -->
@@ -378,7 +405,7 @@ function getDashboardHtml() {
               </div>
               <div>
                 <label class="block text-xs font-black uppercase mb-1">Foto Profil</label>
-                <input id="guiFotoProfil" class="w-full p-2 border-2 border-black rounded-md text-sm bg-white" placeholder="profile.svg">
+                <input id="guiFotoProfil" class="w-full p-2 border-2 border-black rounded-md text-sm bg-white" placeholder="profile.jpg">
               </div>
               <div class="sm:col-span-2">
                 <label class="block text-xs font-black uppercase mb-1">Deskripsi Halaman</label>
@@ -620,7 +647,7 @@ function getDashboardHtml() {
             <div>
               <div class="font-black text-sm">\${nama}</div>
               <div class="text-[11px] font-bold text-gray-600">\${g.id}.manurhidma.my.id</div>
-              <div class="text-[11px] text-gray-500">${g.mdCount} file md</div>
+              <div class="text-[11px] text-gray-500">\${g.mdCount} file md</div>
             </div>
             <button onclick="event.stopPropagation(); konfirmasiHapusGuru('\${g.id}')" class="neu-btn bg-[#FF5252] text-white text-xs px-2 py-1 rounded">✕</button>
           </div>
@@ -651,7 +678,7 @@ function getDashboardHtml() {
     function renderGuiForm(s) {
       document.getElementById('guiNamaGuru').value = s.namaGuru || '';
       document.getElementById('guiJudulSitus').value = s.judulSitus || '';
-      document.getElementById('guiFotoProfil').value = s.fotoProfil || 'profile.svg';
+      document.getElementById('guiFotoProfil').value = s.fotoProfil || 'profile.jpg';
       document.getElementById('guiDeskripsi').value = s.deskripsi || '';
       document.getElementById('guiPemberitahuan').value = s.pemberitahuan || '';
 
@@ -784,7 +811,7 @@ function getDashboardHtml() {
       const next = cur === 'hidden' ? 'active' : 'hidden';
       currentSettings.pelajaran[pIdx].visible = next;
       renderPelajaranList();
-      showToast(`Status diubah menjadi ${next === 'hidden' ? 'Hidden (Sembunyi)' : 'Active (Tampil)'}`);
+      showToast(\"Status diubah menjadi \" + (next === 'hidden' ? 'Hidden (Sembunyi)' : 'Active (Tampil)'));
     }
     function konfirmasiHapusPelajaran(pIdx) {
       showConfirmModal({
@@ -842,12 +869,46 @@ function getDashboardHtml() {
       showToast('Materi dihapus dari daftar');
     }
 
+        async function triggerDeploy() {
+      const btn = document.getElementById("btnGlobalDeploy");
+      const origText = btn ? btn.innerText : "";
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = "⏳ Sedang Deploy...";
+        btn.classList.add("opacity-60", "cursor-not-allowed");
+      }
+      showToast("Memulai proses build & deploy...", "🚀");
+
+      try {
+        const res = await fetch("/api/deploy", { method: "POST" });
+        const data = await res.json();
+        if (data.success) {
+          showToast("Deploy berhasil ke Cloudflare Pages!", "🎉");
+        } else {
+          showToast("Deploy gagal: " + (data.error || "Cek terminal"), "❌");
+        }
+      } catch (e) {
+        showToast("Gagal memanggil proses deploy", "❌");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = origText;
+          btn.classList.remove("opacity-60", "cursor-not-allowed");
+        }
+      }
+    }
+
+    async function saveAndDeploy() {
+      await saveGuiSettings();
+      await triggerDeploy();
+    }
+
     async function saveGuiSettings() {
       if (!activeGuruId || !currentSettings) return;
 
       currentSettings.namaGuru = document.getElementById('guiNamaGuru').value.trim();
       currentSettings.judulSitus = document.getElementById('guiJudulSitus').value.trim();
-      currentSettings.fotoProfil = document.getElementById('guiFotoProfil').value.trim() || 'profile.svg';
+      currentSettings.fotoProfil = document.getElementById('guiFotoProfil').value.trim() || 'profile.jpg';
       currentSettings.deskripsi = document.getElementById('guiDeskripsi').value.trim();
       currentSettings.pemberitahuan = document.getElementById('guiPemberitahuan').value.trim();
 

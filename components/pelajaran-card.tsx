@@ -9,12 +9,6 @@ const kelasClass: Record<string, string> = {
   XII: "card-kelas-xii",
 };
 
-const kelasBadge: Record<string, string> = {
-  X:   "badge-kelas-x",
-  XI:  "badge-kelas-xi",
-  XII: "badge-kelas-xii",
-};
-
 export default function PelajaranCard({
   pelajaran,
   index,
@@ -23,26 +17,29 @@ export default function PelajaranCard({
   index?: number;
 }) {
   const cardClass = pelajaran.kelas ? (kelasClass[pelajaran.kelas] ?? "") : "";
-  const badgeClass = pelajaran.kelas ? (kelasBadge[pelajaran.kelas] ?? "bg-muted") : "bg-muted";
 
   return (
     <Link
       href={`/pelajaran/${pelajaran.slug}`}
       className={`neu-card group relative flex flex-col justify-between rounded-xl border-3 border-border p-5 sm:p-6 no-underline text-foreground neu-shadow transition-all duration-150 hover:-translate-y-1 hover:translate-x-1 overflow-hidden ${cardClass}`}
     >
-      {/* Angka kelas membayang di sudut kanan bawah */}
+      {/* Angka kelas besar membayang di sudut kanan bawah */}
       {pelajaran.kelas && (
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute right-3 bottom-1 select-none font-black text-foreground/[0.07] leading-none"
-          style={{ fontSize: "clamp(4.5rem, 14vw, 6.5rem)" }}
+          className="pointer-events-none absolute right-2 -bottom-2 select-none font-black text-foreground/[0.14] dark:text-foreground/[0.16] leading-none tracking-tighter"
+          style={{ fontSize: "clamp(5rem, 16vw, 7.5rem)" }}
         >
           {pelajaran.kelas}
         </span>
       )}
 
       <div className="relative flex items-center justify-between gap-3">
-        {typeof index === "number" ? (
+        {pelajaran.kelas ? (
+          <span className="inline-block rounded border-2 border-border bg-primary px-2.5 py-0.5 font-mono text-xs font-black text-primary-foreground">
+            Kelas {pelajaran.kelas}
+          </span>
+        ) : typeof index === "number" ? (
           <span className="inline-block rounded border-2 border-border bg-primary px-2.5 py-0.5 font-mono text-xs font-black text-primary-foreground">
             #{String(index + 1).padStart(2, "0")}
           </span>
@@ -60,16 +57,11 @@ export default function PelajaranCard({
         </h2>
       </div>
 
-      <div className="relative pt-3 border-t-2 border-border/40 flex items-center justify-between text-xs font-bold text-muted-foreground">
+      <div className="relative pt-1 flex items-center justify-between text-xs font-bold text-muted-foreground">
         <span className="flex items-center gap-1.5">
           <BookOpen className="size-3.5 stroke-[2.5]" />
-          {pelajaran.daftarMateri.length} Materi Tersedia
+          {pelajaran.daftarMateri.length} BAB
         </span>
-        {pelajaran.kelas && (
-          <span className={`rounded border-2 border-border px-2 py-0.5 font-mono text-xs font-black text-foreground ${badgeClass}`}>
-            Kelas {pelajaran.kelas}
-          </span>
-        )}
       </div>
     </Link>
   );
