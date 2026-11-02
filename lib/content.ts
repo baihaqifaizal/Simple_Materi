@@ -10,6 +10,8 @@ export type MateriItemSetting = {
 
 export type PelajaranSetting = {
   judul: string;
+  kelas?: string;
+  visible?: "active" | "hidden" | string;
   slug?: string;
   materi: MateriItemSetting[];
 };
@@ -36,6 +38,8 @@ export type MateriMeta = {
 
 export type PelajaranGroup = {
   judul: string;
+  kelas?: string;
+  visible?: string;
   slug: string;
   daftarMateri: MateriMeta[];
 };
@@ -133,6 +137,8 @@ export function getSettings(guru: string): Settings {
     pelajaran = data.pelajaran.map((p: any) => {
       const judul = typeof p.judul === "string" ? p.judul : "Pelajaran";
       const slug = typeof p.slug === "string" && p.slug ? p.slug : slugify(judul);
+      const kelas = typeof p.kelas === "string" ? p.kelas : undefined;
+      const visible = typeof p.visible === "string" ? p.visible : "active";
       const materiList: MateriItemSetting[] = Array.isArray(p.materi)
         ? p.materi.filter((m: any) => m && typeof m.file === "string")
             .map((m: any) => ({
@@ -142,6 +148,8 @@ export function getSettings(guru: string): Settings {
         : [];
       return {
         judul,
+        kelas,
+        visible,
         slug,
         materi: materiList,
       };
@@ -178,8 +186,10 @@ export function listPelajaran(guru: string): PelajaranGroup[] {
   const settings = getSettings(guru);
 
   if (settings.pelajaran && settings.pelajaran.length > 0) {
-    return settings.pelajaran.map((pel) => {
-      const pSlug = pel.slug || slugify(pel.judul);
+    return settings.pelajaran
+      .filter((pel) => pel.visible !== "hidden")
+      .map((pel) => {
+        const pSlug = pel.slug || slugify(pel.judul);
       const daftarMateri: MateriMeta[] = pel.materi.map((item) => {
         const slug = fileToSlug(item.file);
         const targetPath = path.join(dir, item.file);
@@ -210,6 +220,7 @@ export function listPelajaran(guru: string): PelajaranGroup[] {
 
       return {
         judul: pel.judul,
+        kelas: pel.kelas,
         slug: pSlug,
         daftarMateri,
       };
@@ -242,6 +253,7 @@ export function listMateri(guru: string): MateriMeta[] {
   if (settings.pelajaran && settings.pelajaran.length > 0) {
     const list: MateriMeta[] = [];
     for (const pel of settings.pelajaran) {
+      if (pel.visible === "hidden") continue;
       const pSlug = pel.slug || slugify(pel.judul);
       for (const item of pel.materi) {
         const slug = fileToSlug(item.file);
@@ -312,6 +324,7 @@ export function getMateri(
   // Cek jika slug dicocokkan dari pelajaran di settings
   if (settings.pelajaran) {
     for (const pel of settings.pelajaran) {
+      if (pel.visible === "hidden") continue;
       const matched = pel.materi.find((item) => fileToSlug(item.file) === slug);
       if (matched) {
         targetFile = matched.file;

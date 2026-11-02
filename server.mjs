@@ -479,8 +479,25 @@ function getDashboardHtml() {
       </div>
       <div>
         <label class="block text-xs font-black uppercase mb-1">Nama Pelajaran / Rombel</label>
-        <input id="inputNamaPelajaran" class="w-full p-2.5 border-2 border-black rounded-md text-sm font-bold" placeholder="contoh: Seni XII Semester 1">
-        <p class="text-[11px] text-gray-500 mt-1">Akan menjadi rute /pelajaran/seni-xii-semester-1</p>
+        <input id="inputNamaPelajaran" class="w-full p-2.5 border-2 border-black rounded-md text-sm font-bold" placeholder="contoh: Seni X Semester 1">
+        <p class="text-[11px] text-gray-500 mt-1">Akan menjadi rute /pelajaran/seni-x-semester-1</p>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-black uppercase mb-1">Kelas</label>
+          <select id="inputKelasPelajaran" class="w-full p-2.5 border-2 border-black rounded-md text-sm font-bold bg-white">
+            <option value="X">Kelas X</option>
+            <option value="XI">Kelas XI</option>
+            <option value="XII">Kelas XII</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-black uppercase mb-1">Status Visibilitas</label>
+          <select id="inputVisiblePelajaran" class="w-full p-2.5 border-2 border-black rounded-md text-sm font-bold bg-white">
+            <option value="active">Active (Tampil)</option>
+            <option value="hidden">Hidden (Sembunyi)</option>
+          </select>
+        </div>
       </div>
       <div class="flex justify-end gap-2 pt-2 border-t-2 border-black/10">
         <button onclick="closeModal('modalTambahPelajaran')" class="neu-btn bg-gray-200 px-4 py-2 rounded-md text-xs">Batal</button>
@@ -603,7 +620,7 @@ function getDashboardHtml() {
             <div>
               <div class="font-black text-sm">\${nama}</div>
               <div class="text-[11px] font-bold text-gray-600">\${g.id}.manurhidma.my.id</div>
-              <div class="text-[11px] text-gray-500">\${mapel} · \${g.mdCount} file md</div>
+              <div class="text-[11px] text-gray-500">${g.mdCount} file md</div>
             </div>
             <button onclick="event.stopPropagation(); konfirmasiHapusGuru('\${g.id}')" class="neu-btn bg-[#FF5252] text-white text-xs px-2 py-1 rounded">✕</button>
           </div>
@@ -660,17 +677,37 @@ function getDashboardHtml() {
           </div>
         \`).join('');
 
+        const isHidden = pel.visible === "hidden";
+        const kelasVal = pel.kelas || "";
         return \`
-          <div class="neu-box-sm bg-yellow-50/70 p-4 space-y-3">
-            <div class="flex items-center justify-between gap-3">
-              <div class="flex-1 flex items-center gap-2">
+          <div class="neu-box-sm \${isHidden ? "bg-gray-100/80 opacity-75 border-dashed" : "bg-yellow-50/70"} p-4 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex-1 min-w-[280px] flex items-center gap-2">
                 <button type="button" onclick="togglePelajaranAccordion(\${pIdx})" class="text-xs font-black px-1.5 py-0.5 rounded border border-black bg-white hover:bg-yellow-200" title="Expand/Collapse Materi">
                   <span id="arrowPelajaran_\${pIdx}">▶</span>
                 </button>
                 <span class="bg-[#FFE500] border-2 border-black font-black text-xs px-2 py-0.5 rounded">Rombel</span>
                 <input type="text" class="flex-1 font-black text-sm p-1.5 bg-white border-2 border-black rounded-md" value="\${pel.judul || ''}" placeholder="Nama Pelajaran (misal: Seni X Semester 1)" onchange="updatePelajaranJudul(\${pIdx}, this.value)">
               </div>
-              <button onclick="konfirmasiHapusPelajaran(\${pIdx})" class="neu-btn bg-[#FF5252] text-white px-2.5 py-1 rounded text-xs">Hapus Rombel</button>
+
+              <!-- Kontrol Kelas & Visible -->
+              <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1 bg-white border-2 border-black px-2 py-1 rounded-md text-xs font-black">
+                  <span>Kelas:</span>
+                  <select onchange="updatePelajaranKelas(\${pIdx}, this.value)" class="bg-transparent font-black cursor-pointer focus:outline-none">
+                    <option value="" \${!kelasVal ? "selected" : ""}>-</option>
+                    <option value="X" \${kelasVal === "X" ? "selected" : ""}>X</option>
+                    <option value="XI" \${kelasVal === "XI" ? "selected" : ""}>XI</option>
+                    <option value="XII" \${kelasVal === "XII" ? "selected" : ""}>XII</option>
+                  </select>
+                </div>
+
+                <button type="button" onclick="togglePelajaranVisible(\${pIdx})" class="neu-btn text-xs px-2.5 py-1 rounded flex items-center gap-1 \${isHidden ? "bg-gray-300 text-gray-700" : "bg-[#4ADE80] text-black"}" title="Klik untuk ubah Active / Hidden">
+                  <span>\${isHidden ? "👁️‍🗨️ Hidden" : "✅ Active"}</span>
+                </button>
+
+                <button onclick="konfirmasiHapusPelajaran(\${pIdx})" class="neu-btn bg-[#FF5252] text-white px-2.5 py-1 rounded text-xs">Hapus</button>
+              </div>
             </div>
 
             <!-- List Materi dalam Pelajaran (Collapsible - Default Collapse) -->
@@ -716,14 +753,20 @@ function getDashboardHtml() {
     // Modal Pelajaran Handlers
     function openModalTambahPelajaran() {
       document.getElementById('inputNamaPelajaran').value = '';
+      document.getElementById('inputKelasPelajaran').value = 'X';
+      document.getElementById('inputVisiblePelajaran').value = 'active';
       openModal('modalTambahPelajaran');
     }
     function submitTambahPelajaran() {
       const nama = document.getElementById('inputNamaPelajaran').value.trim();
+      const kelas = document.getElementById('inputKelasPelajaran').value;
+      const visible = document.getElementById('inputVisiblePelajaran').value;
       if (!nama) return showToast('Nama pelajaran wajib diisi', '⚠️');
       if (!currentSettings.pelajaran) currentSettings.pelajaran = [];
       currentSettings.pelajaran.push({
         judul: nama,
+        kelas: kelas,
+        visible: visible,
         materi: []
       });
       closeModal('modalTambahPelajaran');
@@ -732,6 +775,16 @@ function getDashboardHtml() {
     }
     function updatePelajaranJudul(pIdx, val) {
       currentSettings.pelajaran[pIdx].judul = val;
+    }
+    function updatePelajaranKelas(pIdx, val) {
+      currentSettings.pelajaran[pIdx].kelas = val;
+    }
+    function togglePelajaranVisible(pIdx) {
+      const cur = currentSettings.pelajaran[pIdx].visible;
+      const next = cur === 'hidden' ? 'active' : 'hidden';
+      currentSettings.pelajaran[pIdx].visible = next;
+      renderPelajaranList();
+      showToast(`Status diubah menjadi ${next === 'hidden' ? 'Hidden (Sembunyi)' : 'Active (Tampil)'}`);
     }
     function konfirmasiHapusPelajaran(pIdx) {
       showConfirmModal({

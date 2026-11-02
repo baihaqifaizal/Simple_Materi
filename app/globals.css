@@ -110,6 +110,43 @@
   }
 }
 
+/* ─── Animasi Ringan: pengganti framer-motion ─── */
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.anim-fadein {
+  animation: fadein 0.4s ease-out both;
+}
+
+/* Hormat prefers-reduced-motion — matikan semua animasi */
+@media (prefers-reduced-motion: reduce) {
+  .anim-fadein {
+    animation: none;
+  }
+}
+
+/* ─── Warna Tint Card per Kelas ─── */
+/* Light mode */
+.card-kelas-x   { background-color: #ffeb3b1c; } /* kuning tipis */
+.card-kelas-xi  { background-color: #ff52521a; } /* merah tipis  */
+.card-kelas-xii { background-color: #2196f31a; } /* biru tipis   */
+
+/* Badge bawah card */
+.badge-kelas-x   { background-color: #ffeb3b30; }
+.badge-kelas-xi  { background-color: #ff525228; }
+.badge-kelas-xii { background-color: #2196f328; }
+
+/* Dark mode — opacity lebih rendah agar tidak terlalu mencolok */
+.dark .card-kelas-x   { background-color: #ffeb3b12; }
+.dark .card-kelas-xi  { background-color: #ff525212; }
+.dark .card-kelas-xii { background-color: #2196f312; }
+
+.dark .badge-kelas-x   { background-color: #ffeb3b22; }
+.dark .badge-kelas-xi  { background-color: #ff525222; }
+.dark .badge-kelas-xii { background-color: #2196f322; }
+
 /* Neubrutalist Shadows */
 .neu-shadow {
   box-shadow: 3px 3px 0 var(--border);

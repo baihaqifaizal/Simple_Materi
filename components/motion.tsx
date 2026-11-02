@@ -1,9 +1,6 @@
-"use client";
+import type { CSSProperties, ReactElement, ReactNode } from "react";
 
-import { motion, useReducedMotion } from "framer-motion";
-import type { ReactElement, ReactNode } from "react";
-
-/** Fade + geser ringan saat elemen masuk; hormat prefers-reduced-motion. */
+/** Fade + geser ringan saat elemen masuk; hormat prefers-reduced-motion via CSS. */
 export function FadeIn({
   children,
   delay = 0,
@@ -11,32 +8,23 @@ export function FadeIn({
   children: ReactNode;
   delay?: number;
 }) {
-  const ringkas = useReducedMotion();
+  const style: CSSProperties = delay > 0 ? { animationDelay: `${delay}s` } : {};
   return (
-    <motion.div
-      initial={false}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: ringkas ? 0 : 0.5,
-        delay: ringkas ? 0 : delay,
-        ease: "easeOut",
-      }}
-    >
+    <div className="anim-fadein" style={style}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
 /** Daftar kartu: delay bertahap antar item (maks 0.4 s). */
 export function Stagger({ children }: { children: ReactNode }) {
-  const ringkas = useReducedMotion();
   const items = Array.isArray(children) ? children : [children];
   return (
     <>
       {items.map((c, i) => (
         <FadeIn
           key={(c as ReactElement)?.key ?? i}
-          delay={ringkas ? 0 : Math.min(i * 0.04, 0.4)}
+          delay={Math.min(i * 0.04, 0.4)}
         >
           {c}
         </FadeIn>

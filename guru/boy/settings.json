@@ -7,7 +7,9 @@
   "temaWarna": "biru",
   "pelajaran": [
     {
-      "judul": "Materi Seni X Semester 1",
+      "judul": "Seni X Semester 1",
+      "kelas": "X",
+      "visible": "active",
       "materi": [
         {
           "judulMateri": "7 Elemen Musik",
@@ -28,7 +30,9 @@
       ]
     },
     {
-      "judul": "Materi Seni X Semester 2",
+      "judul": "Seni X Semester 2",
+      "kelas": "X",
+      "visible": "hidden",
       "materi": [
         {
           "judulMateri": "Pertunjukan Musik",
@@ -49,7 +53,9 @@
       ]
     },
     {
-      "judul": "Materi Seni XI Semester 1",
+      "judul": "Seni XI Semester 1",
+      "kelas": "XI",
+      "visible": "active",
       "materi": [
         {
           "judulMateri": "Fisika & Akustik Suara",
@@ -74,7 +80,9 @@
       ]
     },
     {
-      "judul": "Materi Seni XI Semester 2",
+      "judul": "Seni XI Semester 2",
+      "kelas": "XI",
+      "visible": "hidden",
       "materi": [
         {
           "judulMateri": "Tradisi Musik Lintas Budaya",
@@ -99,7 +107,9 @@
       ]
     },
     {
-      "judul": "Materi Seni XII Semester 1",
+      "judul": "Seni XII Semester 1",
+      "kelas": "XII",
+      "visible": "active",
       "materi": [
         {
           "judulMateri": "Sejarah Genre Musik",
@@ -120,7 +130,9 @@
       ]
     },
     {
-      "judul": "Materi Seni XII Semester 2",
+      "judul": "Seni XII Semester 2",
+      "kelas": "XII",
+      "visible": "hidden",
       "materi": [
         {
           "judulMateri": "Ide Kreatif Seni Musik",
@@ -137,7 +149,9 @@
       ]
     },
     {
-      "judul": "Materi Coding dan AI X Semester 1",
+      "judul": "Coding dan AI X Semester 1",
+      "kelas": "X",
+      "visible": "active",
       "materi": [
         {
           "judulMateri": "Berpikir Komputasional",

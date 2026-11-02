@@ -1,0 +1,27 @@
+# Cloudflare Pages — Cache Headers
+# Hash Next.js berubah otomatis setiap build, jadi immutable 100% aman.
+
+# Semua aset statis Next.js: JS, CSS, font — cache selamanya
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Gambar guru — cache selamanya (hash berubah jika file berubah)
+/gambar/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML: jangan cache — agar versi baru langsung aktif setelah deploy
+/*.html
+  Cache-Control: no-cache, must-revalidate
+
+/*/index.html
+  Cache-Control: no-cache, must-revalidate
+
+# Favicon dan manifest (jika ada)
+/favicon.ico
+  Cache-Control: public, max-age=86400
+
+# Default semua file lain
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+

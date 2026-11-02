@@ -9,6 +9,7 @@ import { execSync } from "node:child_process";
 const GURU_DIR = path.resolve("guru");
 const DIST_DIR = path.resolve("dist");
 const OUT_DIR = path.resolve("out");
+const HEADERS_SRC = path.resolve("public", "_headers");
 
 // Pastikan dist bersih
 if (fs.existsSync(DIST_DIR)) {
@@ -51,6 +52,13 @@ for (const guru of daftarGuru) {
   // 3. Salin out/ ke dist/<guru>/
   const targetDir = path.join(DIST_DIR, guru);
   fs.cpSync(OUT_DIR, targetDir, { recursive: true });
+
+  // 4. Salin _headers ke dist/<guru>/ agar cache permanen aktif di Cloudflare Pages
+  if (fs.existsSync(HEADERS_SRC)) {
+    fs.copyFileSync(HEADERS_SRC, path.join(targetDir, "_headers"));
+    console.log(`[OK] _headers (cache permanen) disalin ke dist/${guru}/`);
+  }
+
   console.log(`[OK] Hasil build '${guru}' tersimpan di dist/${guru}/`);
 }
 
