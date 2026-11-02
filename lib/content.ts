@@ -16,7 +16,6 @@ export type PelajaranSetting = {
 
 export type Settings = {
   namaGuru: string;
-  mapel: string;
   judulSitus: string;
   deskripsi: string;
   temaWarna: string;
@@ -151,7 +150,6 @@ export function getSettings(guru: string): Settings {
 
   return {
     namaGuru: typeof data.namaGuru === "string" ? data.namaGuru : guru,
-    mapel: typeof data.mapel === "string" ? data.mapel : "",
     judulSitus: typeof data.judulSitus === "string" ? data.judulSitus : guru,
     deskripsi: typeof data.deskripsi === "string" ? data.deskripsi : "",
     temaWarna: typeof data.temaWarna === "string" ? data.temaWarna : "biru",

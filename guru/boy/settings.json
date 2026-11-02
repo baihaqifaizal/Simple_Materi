@@ -1,31 +1,163 @@
 {
   "namaGuru": "Boy",
-  "mapel": "Seni Budaya",
   "judulSitus": "Materi Pembelajaran Pak Boy",
-  "deskripsi": "Portal materi dan tugas siswa untuk pelajaran Pak Boy",
+  "deskripsi": "Portal materi dan tugas siswa untuk pelajaran Seni Musik serta Coding dan AI bersama Pak Boy",
   "fotoProfil": "profile.svg",
-  "pemberitahuan": "Selamat datang siswa-siswi! Silakan pelajari materi semester 1 sesuai jenjang kelas masing-masing.",
+  "pemberitahuan": "Selamat datang siswa-siswi! Silakan pelajari materi sesuai jenjang kelas dan semester masing-masing.",
   "temaWarna": "biru",
   "pelajaran": [
     {
-      "judul": "Seni X Semester 1",
+      "judul": "Materi Seni X Semester 1",
       "materi": [
         {
-          "judulMateri": "Pengenalan Seni Rupa",
-          "file": "seni_x_1.md"
+          "judulMateri": "7 Elemen Musik",
+          "file": "seni-x-sem1-7-elemen-musik.md"
+        },
+        {
+          "judulMateri": "Teknik Dasar Instrumen (Gitar & Piano)",
+          "file": "seni-x-sem1-teknik-dasar-instrumen.md"
+        },
+        {
+          "judulMateri": "Teknik Dasar Vokal",
+          "file": "seni-x-sem1-teknik-dasar-vokal.md"
+        },
+        {
+          "judulMateri": "Ekspresi & Interpretasi Vokal",
+          "file": "seni-x-sem1-ekspresi-interpretasi-vokal.md"
         }
       ]
     },
     {
-      "judul": "Seni XI Semester 1",
+      "judul": "Materi Seni X Semester 2",
       "materi": [
         {
-          "judulMateri": "7 Elemen Musik",
-          "file": "7_elemen_musik.md"
+          "judulMateri": "Pertunjukan Musik",
+          "file": "seni-x-sem2-pertunjukan-musik.md"
         },
         {
-          "judulMateri": "Apresiasi Seni Lukis",
-          "file": "seni_xi_1.md"
+          "judulMateri": "Pengorganisasian Pertunjukan",
+          "file": "seni-x-sem2-pengorganisasian-pertunjukan.md"
+        },
+        {
+          "judulMateri": "Ekspresi & Kreativitas Musik",
+          "file": "seni-x-sem2-ekspresi-kreativitas-musik.md"
+        },
+        {
+          "judulMateri": "Etika & Apresiasi Musik",
+          "file": "seni-x-sem2-etika-apresiasi-musik.md"
+        }
+      ]
+    },
+    {
+      "judul": "Materi Seni XI Semester 1",
+      "materi": [
+        {
+          "judulMateri": "Fisika & Akustik Suara",
+          "file": "seni-xi-sem1-fisika-akustik-suara.md"
+        },
+        {
+          "judulMateri": "Arus Sinyal (Signal Flow) dan Kabel",
+          "file": "seni-xi-sem1-arus-sinyal-kabel.md"
+        },
+        {
+          "judulMateri": "Speaker Aktif & Speaker Pasif",
+          "file": "seni-xi-sem1-speaker-aktif-pasif.md"
+        },
+        {
+          "judulMateri": "Mixer Audio & Gain Staging",
+          "file": "seni-xi-sem1-mixer-audio-gain-staging.md"
+        },
+        {
+          "judulMateri": "Setup Audio",
+          "file": "seni-xi-sem1-setup-audio.md"
+        }
+      ]
+    },
+    {
+      "judul": "Materi Seni XI Semester 2",
+      "materi": [
+        {
+          "judulMateri": "Tradisi Musik Lintas Budaya",
+          "file": "seni-xi-sem2-tradisi-musik-lintas-budaya.md"
+        },
+        {
+          "judulMateri": "Psikologi Musik Terhadap Pendengar",
+          "file": "seni-xi-sem2-psikologi-musik-terhadap-pendengar.md"
+        },
+        {
+          "judulMateri": "Musik Tradisional dan Musik Kontemporer",
+          "file": "seni-xi-sem2-musik-tradisional-kontemporer.md"
+        },
+        {
+          "judulMateri": "Musik, Sejarah dan Budaya",
+          "file": "seni-xi-sem2-musik-sejarah-budaya.md"
+        },
+        {
+          "judulMateri": "Musik sebagai Identitas Sosial & Budaya",
+          "file": "seni-xi-sem2-musik-identitas-sosial-budaya.md"
+        }
+      ]
+    },
+    {
+      "judul": "Materi Seni XII Semester 1",
+      "materi": [
+        {
+          "judulMateri": "Sejarah Genre Musik",
+          "file": "seni-xii-sem1-sejarah-genre-musik.md"
+        },
+        {
+          "judulMateri": "Genre Musik Dunia",
+          "file": "seni-xii-sem1-genre-musik-dunia.md"
+        },
+        {
+          "judulMateri": "Analisis Musik",
+          "file": "seni-xii-sem1-analisis-musik.md"
+        },
+        {
+          "judulMateri": "Proses Produksi Musik",
+          "file": "seni-xii-sem1-proses-produksi-musik.md"
+        }
+      ]
+    },
+    {
+      "judul": "Materi Seni XII Semester 2",
+      "materi": [
+        {
+          "judulMateri": "Ide Kreatif Seni Musik",
+          "file": "seni-xii-sem2-ide-kreatif-seni-musik.md"
+        },
+        {
+          "judulMateri": "Proses Distribusi Musik",
+          "file": "seni-xii-sem2-proses-distribusi-musik.md"
+        },
+        {
+          "judulMateri": "Implementasi Seni Musik",
+          "file": "seni-xii-sem2-implementasi-seni-musik.md"
+        }
+      ]
+    },
+    {
+      "judul": "Materi Coding dan AI X Semester 1",
+      "materi": [
+        {
+          "judulMateri": "Berpikir Komputasional",
+          "file": "coding-ai-x-sem1-berpikir-komputasional.md"
+        },
+        {
+          "judulMateri": "Merancang Algoritma",
+          "file": "coding-ai-x-sem1-merancang-algoritma.md"
+        },
+        {
+          "judulMateri": "Logika Dasar Pemrograman",
+          "file": "coding-ai-x-sem1-logika-dasar-pemrograman.md"
+        },
+        {
+          "judulMateri": "Struktur Data Array Dan Prosedur/Fungsi",
+          "file": "coding-ai-x-sem1-struktur-data-array-prosedur-fungsi.md"
+        },
+        {
+          "judulMateri": "Penerapan Logika Berpikir Pada Teknologi Modern",
+          "file": "coding-ai-x-sem1-penerapan-logika-berpikir-teknologi-modern.md"
         }
       ]
     }

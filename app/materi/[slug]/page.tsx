@@ -48,7 +48,7 @@ export default async function HalamanMateri({ params }: Props) {
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-block rounded border-2 border-border bg-primary px-2.5 py-0.5 text-xs font-black uppercase text-foreground">
                 <User className="inline size-3.5 mr-1 stroke-[2.5]" />
-                {s.namaGuru} {s.mapel ? `(${s.mapel})` : ""}
+                {s.namaGuru}
               </span>
               {meta.tanggal ? (
                 <span className="inline-flex items-center gap-1 rounded border-2 border-border bg-muted px-2.5 py-0.5 text-xs font-bold text-foreground tabular-nums">

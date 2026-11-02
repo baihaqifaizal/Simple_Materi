@@ -13,11 +13,22 @@ guru/
 ## Alur harian guru
 
 1. **Menulis/edit** `.md` di `guru/<nama>/md/` (taruh gambar di `guru/<nama>/gambar/`).
-2. **PowerShell** di folder project:
-   - `.\build.ps1` — bangun + buka preview di http://localhost:4177
-   - `.\build.ps1 -Watch` — mode tulis, materi live di http://localhost:3000
-   - `.\build.ps1 -Deploy` — build lalu terbit ke `<nama>.manurhidma.my.id`
-3. Selesai.
+   - Setiap nama folder di `guru/<nama>` otomatis menjadi subdomain `https://<nama>.manurhidma.my.id`.
+2. **Cara Menjalankan & Deploy**:
+   - **Cukup 1-Klik**: Jalankan `menu.cmd` -> Pilih `[2] 1-Klik Deploy Cloudflare Pages (Semua Guru Otomatis)`
+   - Atau lewat PowerShell:
+     - `.\build.ps1 -Deploy` — otomatis build seluruh folder guru sekaligus & deploy ke Cloudflare project `simple-materi`.
+     - `.\build.ps1 -Target boy -Watch` — mode live preview materi lokal di http://localhost:3000
+
+## Setup Kustom Domain di Cloudflare Pages (Cukup Sekali di Awal)
+
+Karena project di Cloudflare Pages hanya 1 yaitu **`simple-materi`**:
+1. Buka [Cloudflare Dashboard](https://dash.cloudflare.com/) -> **Workers & Pages**.
+2. Klik project **`simple-materi`**.
+3. Buka tab **Custom domains** -> Klik **Set up a custom domain**.
+4. Masukkan subdomain guru (misal `boy.manurhidma.my.id` atau gunakan CNAME wildcard `*.manurhidma.my.id`).
+5. Klik **Activate domain**.
+6. Router internal Cloudflare Pages (`_worker.js`) akan otomatis mendeteksi subdomain dari URL browser dan menyajikan folder guru yang sesuai!
 
 ## Sintaks khusus di MD
 
