@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { activeGuru, getMateri, getSettings, listMateri, type Block } from "@/lib/content";
 import SiteHeader from "@/components/site-header";
+import YouTubeEmbed from "@/components/youtube-embed";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -42,7 +43,7 @@ export default async function HalamanMateri({ params }: Props) {
 
         <div className="prose prose-neutral mt-8 max-w-none prose-headings:tracking-tight prose-headings:font-bold prose-img:rounded-xl">
           {blocks.map((b, i) => (
-            <BlockSatu key={i} block={b} />
+            <BlockSatu key={i} block={b} judul={meta.judul} />
           ))}
         </div>
       </main>
@@ -50,15 +51,9 @@ export default async function HalamanMateri({ params }: Props) {
   );
 }
 
-function BlockSatu({ block }: { block: Block }) {
+function BlockSatu({ block, judul }: { block: Block; judul?: string }) {
   if (block.type === "youtube") {
-    // placeholder — komponen asli di Task 8
-    return (
-      <div
-        data-youtube-id={block.id}
-        className="aspect-video rounded-xl border border-dashed border-border"
-      />
-    );
+    return <YouTubeEmbed id={block.id} judul={judul} />;
   }
   return <div dangerouslySetInnerHTML={{ __html: block.html }} />;
 }
