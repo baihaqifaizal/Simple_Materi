@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
-import { listMateri, getMateri, getSettings } from "./content";
+import { listMateri, getMateri, getSettings, listGuru } from "./content";
 
 // Fixture tatapan: guru/boy (dikomit), sisanya folder temporer yang dibuat & dibersihkan test.
 const TMP = {
@@ -29,11 +29,12 @@ afterAll(() => {
 });
 
 describe("listMateri", () => {
-  it("mengembalikan 2 materi boy, urut nama file, slug tanpa awalan angka", () => {
+  it("mengembalikan materi boy sesuai pelajaran di settings.json", () => {
     const daftar = listMateri("boy");
     expect(daftar.map((m) => m.slug)).toEqual([
-      "sistem-tata-surya",
-      "siapa-pak-boy",
+      "seni_x_1",
+      "7_elemen_musik",
+      "seni_xi_1",
     ]);
   });
 
@@ -93,16 +94,32 @@ describe("getMateri", () => {
   });
 });
 
+describe("listGuru", () => {
+  it("listGuru: guru dengan settings.json masuk, tanpa tidak", () => {
+    fs.mkdirSync(path.resolve("guru/rapi"), { recursive: true });
+    fs.writeFileSync(
+      path.resolve("guru/rapi/settings.json"),
+      JSON.stringify({ namaGuru: "Rapi", subdomain: "rapi" }),
+      "utf8"
+    );
+    try {
+      expect(listGuru().map((g) => g.namaGuru)).toContain("Boy");
+      expect(listGuru().map((g) => g.namaGuru)).toContain("Rapi");
+      expect(listGuru().map((g) => g.subdomain)).toContain("rapi");
+    } finally {
+      fs.rmSync(path.resolve("guru/rapi"), { recursive: true, force: true });
+    }
+  });
+});
+
 describe("getSettings", () => {
   it("membaca settings.json guru boy", () => {
     const s = getSettings("boy");
-    expect(s).toEqual({
-      namaGuru: "Boy",
-      mapel: "IPA",
-      judulSitus: "Materi IPA Pak Boy",
-      deskripsi: "Kumpulan materi IPA untuk murid",
-      temaWarna: "biru",
-    });
+    expect(s.namaGuru).toBe("Boy");
+    expect(s.mapel).toBe("Seni Budaya");
+    expect(s.fotoProfil).toBe("profile.svg");
+    expect(s.pemberitahuan).toBeDefined();
+    expect(s.pelajaran?.length).toBe(2);
   });
 
   it("tanpa settings.json → fallback bernomor guru", () => {

@@ -3,12 +3,26 @@ import path from "node:path";
 import matter from "gray-matter";
 import { marked } from "marked";
 
+export type MateriItemSetting = {
+  judulMateri: string;
+  file: string;
+};
+
+export type PelajaranSetting = {
+  judul: string;
+  slug?: string;
+  materi: MateriItemSetting[];
+};
+
 export type Settings = {
   namaGuru: string;
   mapel: string;
   judulSitus: string;
   deskripsi: string;
   temaWarna: string;
+  fotoProfil?: string;
+  pemberitahuan?: string;
+  pelajaran?: PelajaranSetting[];
 };
 
 export type MateriMeta = {
@@ -16,6 +30,15 @@ export type MateriMeta = {
   judul: string;
   tanggal: string | null;
   ringkasan: string;
+  file?: string;
+  pelajaranJudul?: string;
+  pelajaranSlug?: string;
+};
+
+export type PelajaranGroup = {
+  judul: string;
+  slug: string;
+  daftarMateri: MateriMeta[];
 };
 
 export type Block = { type: "html"; html: string } | { type: "youtube"; id: string };
@@ -32,6 +55,20 @@ function guruDir(guru: string): string {
 
 function stripPrefix(name: string): string {
   return name.replace(/^(\d+)-/, "");
+}
+
+function fileToSlug(fileName: string): string {
+  const cleanName = fileName.endsWith(".md") ? fileName.slice(0, -3) : fileName;
+  return stripPrefix(cleanName);
+}
+
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
 }
 
 function judulDariDokumen(isi: string): string {
@@ -91,24 +128,162 @@ export function getSettings(guru: string): Settings {
   } catch {
     // tanpa settings.json → default
   }
+
+  let pelajaran: PelajaranSetting[] | undefined;
+  if (Array.isArray(data.pelajaran)) {
+    pelajaran = data.pelajaran.map((p: any) => {
+      const judul = typeof p.judul === "string" ? p.judul : "Pelajaran";
+      const slug = typeof p.slug === "string" && p.slug ? p.slug : slugify(judul);
+      const materiList: MateriItemSetting[] = Array.isArray(p.materi)
+        ? p.materi.filter((m: any) => m && typeof m.file === "string")
+            .map((m: any) => ({
+              judulMateri: typeof m.judulMateri === "string" ? m.judulMateri : (typeof m.judul === "string" ? m.judul : fileToSlug(m.file)),
+              file: m.file,
+            }))
+        : [];
+      return {
+        judul,
+        slug,
+        materi: materiList,
+      };
+    });
+  }
+
   return {
     namaGuru: typeof data.namaGuru === "string" ? data.namaGuru : guru,
     mapel: typeof data.mapel === "string" ? data.mapel : "",
     judulSitus: typeof data.judulSitus === "string" ? data.judulSitus : guru,
     deskripsi: typeof data.deskripsi === "string" ? data.deskripsi : "",
     temaWarna: typeof data.temaWarna === "string" ? data.temaWarna : "biru",
+    fotoProfil: typeof data.fotoProfil === "string" ? data.fotoProfil : undefined,
+    pemberitahuan: typeof data.pemberitahuan === "string" ? data.pemberitahuan : undefined,
+    pelajaran,
   };
 }
 
+export type GuruTersedia = { namaGuru: string; subdomain: string };
+
+/** Semua guru (= folder guru/* yang punya settings.json), urut abjad. */
+export function listGuru(): GuruTersedia[] {
+  if (!fs.existsSync("guru")) return [];
+  return fs
+    .readdirSync("guru", { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .filter((d) => fs.existsSync(path.join("guru", d.name, "settings.json")))
+    .map((d) => ({ subdomain: d.name, ...getSettings(d.name) }))
+    .sort((a, b) => a.subdomain.localeCompare(b.subdomain));
+}
+
+/** Mengambil pelajaran terkelompok */
+export function listPelajaran(guru: string): PelajaranGroup[] {
+  const dir = path.join(guruDir(guru), "md");
+  const settings = getSettings(guru);
+
+  if (settings.pelajaran && settings.pelajaran.length > 0) {
+    return settings.pelajaran.map((pel) => {
+      const pSlug = pel.slug || slugify(pel.judul);
+      const daftarMateri: MateriMeta[] = pel.materi.map((item) => {
+        const slug = fileToSlug(item.file);
+        const targetPath = path.join(dir, item.file);
+
+        let tanggal: string | null = null;
+        let ringkasan = "";
+        let finalJudul = item.judulMateri;
+
+        if (fs.existsSync(targetPath)) {
+          const { data, content } = matter(fs.readFileSync(targetPath, "utf8"));
+          tanggal = typeof data.tanggal !== "undefined" ? String(data.tanggal) : null;
+          ringkasan = typeof data.ringkasan === "string" ? data.ringkasan : ringkasanDariDokumen(content);
+          if (!finalJudul) {
+            finalJudul = typeof data.judul === "string" ? data.judul : judulDariDokumen(content) || slug;
+          }
+        }
+
+        return {
+          slug,
+          judul: finalJudul,
+          tanggal,
+          ringkasan,
+          file: item.file,
+          pelajaranJudul: pel.judul,
+          pelajaranSlug: pSlug,
+        };
+      });
+
+      return {
+        judul: pel.judul,
+        slug: pSlug,
+        daftarMateri,
+      };
+    });
+  }
+
+  // Fallback jika tidak ada pelajaran di settings
+  const allMateri = listMateri(guru);
+  return [
+    {
+      judul: "Semua Pelajaran",
+      slug: "semua",
+      daftarMateri: allMateri,
+    },
+  ];
+}
+
+export function getPelajaran(guru: string, slug: string): PelajaranGroup | null {
+  const daftar = listPelajaran(guru);
+  return daftar.find((p) => p.slug === slug) ?? null;
+}
+
+/** Mengembalikan daftar flat semua materi untuk sitemap / generateStaticParams */
 export function listMateri(guru: string): MateriMeta[] {
   const dir = path.join(guruDir(guru), "md");
   if (!fs.existsSync(dir)) return [];
-  const file = fs
+
+  const settings = getSettings(guru);
+
+  if (settings.pelajaran && settings.pelajaran.length > 0) {
+    const list: MateriMeta[] = [];
+    for (const pel of settings.pelajaran) {
+      const pSlug = pel.slug || slugify(pel.judul);
+      for (const item of pel.materi) {
+        const slug = fileToSlug(item.file);
+        const targetPath = path.join(dir, item.file);
+
+        let tanggal: string | null = null;
+        let ringkasan = "";
+        let finalJudul = item.judulMateri;
+
+        if (fs.existsSync(targetPath)) {
+          const { data, content } = matter(fs.readFileSync(targetPath, "utf8"));
+          tanggal = typeof data.tanggal !== "undefined" ? String(data.tanggal) : null;
+          ringkasan = typeof data.ringkasan === "string" ? data.ringkasan : ringkasanDariDokumen(content);
+          if (!finalJudul) {
+            finalJudul = typeof data.judul === "string" ? data.judul : judulDariDokumen(content) || slug;
+          }
+        }
+
+        list.push({
+          slug,
+          judul: finalJudul,
+          tanggal,
+          ringkasan,
+          file: item.file,
+          pelajaranJudul: pel.judul,
+          pelajaranSlug: pSlug,
+        });
+      }
+    }
+    return list;
+  }
+
+  // Fallback membaca seluruh folder md jika tidak didaftarkan di settings.json
+  const files = fs
     .readdirSync(dir)
     .filter((f) => f.endsWith(".md"))
     .sort();
-  return file.map((f) => {
-    const slug = stripPrefix(f.slice(0, -3));
+
+  return files.map((f) => {
+    const slug = fileToSlug(f);
     const { data, content } = matter(
       fs.readFileSync(path.join(dir, f), "utf8")
     );
@@ -118,6 +293,7 @@ export function listMateri(guru: string): MateriMeta[] {
       tanggal: typeof data.tanggal !== "undefined" ? String(data.tanggal) : null,
       ringkasan:
         typeof data.ringkasan === "string" ? data.ringkasan : ringkasanDariDokumen(content),
+      file: f,
     };
   });
 }
@@ -128,24 +304,56 @@ export function getMateri(
 ): { meta: MateriMeta; blocks: Block[]; raw: string } | null {
   const dir = path.join(guruDir(guru), "md");
   if (!fs.existsSync(dir)) return null;
-  const namaFile = fs
-    .readdirSync(dir)
-    .find((f) => f.endsWith(".md") && stripPrefix(f.slice(0, -3)) === slug);
-  if (!namaFile) return null;
-  const raw = fs.readFileSync(path.join(dir, namaFile), "utf8");
+
+  const settings = getSettings(guru);
+  let targetFile: string | undefined;
+  let customJudul: string | undefined;
+  let pelajaranJudul: string | undefined;
+  let pelajaranSlug: string | undefined;
+
+  // Cek jika slug dicocokkan dari pelajaran di settings
+  if (settings.pelajaran) {
+    for (const pel of settings.pelajaran) {
+      const matched = pel.materi.find((item) => fileToSlug(item.file) === slug);
+      if (matched) {
+        targetFile = matched.file;
+        customJudul = matched.judulMateri;
+        pelajaranJudul = pel.judul;
+        pelajaranSlug = pel.slug || slugify(pel.judul);
+        break;
+      }
+    }
+  }
+
+  // Fallback pencarian file di folder md
+  if (!targetFile) {
+    targetFile = fs
+      .readdirSync(dir)
+      .find((f) => f.endsWith(".md") && fileToSlug(f) === slug);
+  }
+
+  if (!targetFile || !fs.existsSync(path.join(dir, targetFile))) return null;
+
+  const raw = fs.readFileSync(path.join(dir, targetFile), "utf8");
   const { data, content } = matter(raw);
   const diproses = preprocessGambar(
     preprocessYoutube(pangkasHeadingPertama(content))
   );
   const html = marked.parse(diproses, { async: false }) as string;
   const blocks = pecahBlocks(html);
+
+  const finalJudul = customJudul || (typeof data.judul === "string" ? data.judul : judulDariDokumen(content) || slug);
+
   return {
     meta: {
       slug,
-      judul: typeof data.judul === "string" ? data.judul : judulDariDokumen(content) || slug,
+      judul: finalJudul,
       tanggal: typeof data.tanggal !== "undefined" ? String(data.tanggal) : null,
       ringkasan:
         typeof data.ringkasan === "string" ? data.ringkasan : ringkasanDariDokumen(content),
+      file: targetFile,
+      pelajaranJudul,
+      pelajaranSlug,
     },
     blocks,
     raw,

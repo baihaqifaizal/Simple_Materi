@@ -14,7 +14,7 @@ export function FadeIn({
   const ringkas = useReducedMotion();
   return (
     <motion.div
-      initial={{ opacity: 0, y: ringkas ? 0 : 12 }}
+      initial={false}
       animate={{ opacity: 1, y: 0 }}
       transition={{
         duration: ringkas ? 0 : 0.5,

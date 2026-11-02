@@ -4,7 +4,6 @@ import { activeGuru, getSettings } from "@/lib/content";
 import { temaValid } from "@/lib/theme";
 import "./globals.css";
 
-// Pilihan konten-pertama: humanis, enak dibaca untuk materi sekolah.
 const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -25,7 +24,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const s = getSettings(activeGuru());
-  // Tanpa flash: keputusan gelap/terang dicapai sebelum CSS muat.
   const scriptNoFlash = `(function(){try{var t=localStorage.getItem('tema');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
   return (
     <html

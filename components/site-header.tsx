@@ -1,32 +1,28 @@
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
-import { activeGuru, getSettings } from "@/lib/content";
 import ThemeToggle from "@/components/theme-toggle";
 
 export default function SiteHeader() {
-  const s = getSettings(activeGuru());
   return (
-    <header className="sticky top-0 z-10 border-b border-border/60 bg-background/80 backdrop-blur">
-      <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-5 py-3">
+    <header className="sticky top-0 z-50 border-b-2 border-border bg-background">
+      <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link
           href="/"
-          className="flex min-h-11 items-center gap-2 no-underline transition-opacity hover:opacity-75"
+          className="group flex min-h-11 min-w-0 items-center gap-2.5 no-underline"
         >
-          <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
-            <BookOpen className="size-4" />
+          <span className="grid size-10 shrink-0 place-items-center rounded-md border-2 border-border bg-primary text-foreground neu-shadow-sm transition-transform duration-150 group-hover:translate-x-0.5 group-hover:translate-y-0.5">
+            <BookOpen className="size-5 stroke-[2.5]" />
           </span>
-          <span>
-            <span className="block text-sm font-bold leading-tight tracking-tight">
-              {s.judulSitus}
+          <span className="min-w-0">
+            <span className="block truncate text-base font-extrabold tracking-tight text-foreground">
+              Materi
             </span>
-            {s.mapel ? (
-              <span className="block text-[0.7rem] font-medium text-muted-foreground">
-                {s.mapel}
-              </span>
-            ) : null}
+            <span className="block truncate text-xs font-bold text-muted-foreground">
+              MA Nurul Hidayah Majalangu
+            </span>
           </span>
         </Link>
-        <div className="min-h-11 flex items-center">
+        <div className="flex items-center gap-2">
           <ThemeToggle />
         </div>
       </div>

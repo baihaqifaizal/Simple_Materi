@@ -2,12 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
-/**
- * Toggle gelap/terang. Keputusan awal sudah di-set script layout;
- * komponen ini hanya membaca ulang kondisi kelas saat bisu mount.
- */
 export default function ThemeToggle() {
   const [gelap, setGelap] = useState<boolean | null>(null);
 
@@ -21,20 +16,23 @@ export default function ThemeToggle() {
     try {
       localStorage.setItem("tema", jadi ? "dark" : "light");
     } catch {
-      // abaikan: localStorage mungkin ditutup
+      // abaikan
     }
     setGelap(jadi);
   }
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
+    <button
+      type="button"
       onClick={gantiTema}
-      aria-label={gelap ? "Ganti ke terang" : "Ganti ke gelap"}
-      className="rounded-lg text-muted-foreground hover:text-foreground"
+      aria-label={gelap ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
+      className="neu-btn grid size-10 place-items-center rounded-md bg-card text-foreground"
     >
-      {gelap === null ? null : gelap ? <Sun className="size-4" /> : <Moon className="size-4" />}
-    </Button>
+      {gelap === null ? null : gelap ? (
+        <Sun className="size-4 stroke-[2.5]" />
+      ) : (
+        <Moon className="size-4 stroke-[2.5]" />
+      )}
+    </button>
   );
 }

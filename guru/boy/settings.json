@@ -1,7 +1,33 @@
 {
   "namaGuru": "Boy",
-  "mapel": "IPA",
-  "judulSitus": "Materi IPA Pak Boy",
-  "deskripsi": "Kumpulan materi IPA untuk murid",
-  "temaWarna": "biru"
+  "mapel": "Seni Budaya",
+  "judulSitus": "Materi Pembelajaran Pak Boy",
+  "deskripsi": "Portal materi dan tugas siswa untuk pelajaran Pak Boy",
+  "fotoProfil": "profile.svg",
+  "pemberitahuan": "Selamat datang siswa-siswi! Silakan pelajari materi semester 1 sesuai jenjang kelas masing-masing.",
+  "temaWarna": "biru",
+  "pelajaran": [
+    {
+      "judul": "Seni X Semester 1",
+      "materi": [
+        {
+          "judulMateri": "Pengenalan Seni Rupa",
+          "file": "seni_x_1.md"
+        }
+      ]
+    },
+    {
+      "judul": "Seni XI Semester 1",
+      "materi": [
+        {
+          "judulMateri": "7 Elemen Musik",
+          "file": "7_elemen_musik.md"
+        },
+        {
+          "judulMateri": "Apresiasi Seni Lukis",
+          "file": "seni_xi_1.md"
+        }
+      ]
+    }
+  ]
 }
