@@ -113,7 +113,7 @@ describe("getSettings", () => {
   it("membaca settings.json guru boy", () => {
     const s = getSettings("boy");
     expect(s.namaGuru).toBe("Boy");
-    expect(s.fotoProfil).toBe("profile.svg");
+    expect(s.fotoProfil).toBe("profile.jpg");
     expect(s.pemberitahuan).toBeDefined();
     expect(s.pelajaran?.length).toBeGreaterThan(0);
   });

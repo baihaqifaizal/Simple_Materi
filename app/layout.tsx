@@ -33,9 +33,16 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: scriptNoFlash }} />
+        <script
+          id="theme-noflash"
+          dangerouslySetInnerHTML={{ __html: scriptNoFlash }}
+        />
       </head>
-      <body suppressHydrationWarning>{children}</body>
+      <body>
+        {children}
+      </body>
     </html>
   );
 }
+
+

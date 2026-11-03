@@ -61,6 +61,92 @@
   --ring: #ffeb3b;
 }
 
+/* ─── Palet Tema Warna Dinamis ([data-tema]) ─── */
+/* Biru: Modern Indigo / Electric Blue */
+[data-tema="biru"] {
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --ring: #2563eb;
+}
+.dark[data-tema="biru"],
+[data-tema="biru"] .dark,
+.dark [data-tema="biru"] {
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --ring: #3b82f6;
+}
+
+/* Merah: Crimson / Coral Red Neubrutalist */
+[data-tema="merah"] {
+  --primary: #e11d48;
+  --primary-foreground: #ffffff;
+  --ring: #e11d48;
+}
+.dark[data-tema="merah"],
+[data-tema="merah"] .dark,
+.dark [data-tema="merah"] {
+  --primary: #f43f5e;
+  --primary-foreground: #ffffff;
+  --ring: #f43f5e;
+}
+
+/* Kuning: Vibrant Cyber Amber / Warm Sunshine */
+[data-tema="kuning"] {
+  --primary: #f59e0b;
+  --primary-foreground: #121212;
+  --ring: #f59e0b;
+}
+.dark[data-tema="kuning"],
+[data-tema="kuning"] .dark,
+.dark [data-tema="kuning"] {
+  --primary: #fbbf24;
+  --primary-foreground: #121212;
+  --ring: #fbbf24;
+}
+
+/* Hijau: Fresh Emerald / Minty Forest */
+[data-tema="hijau"] {
+  --primary: #059669;
+  --primary-foreground: #ffffff;
+  --ring: #059669;
+}
+.dark[data-tema="hijau"],
+[data-tema="hijau"] .dark,
+.dark [data-tema="hijau"] {
+  --primary: #10b981;
+  --primary-foreground: #121212;
+  --ring: #10b981;
+}
+
+/* Ungu: Deep Violet / Iris */
+[data-tema="ungu"] {
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --ring: #7c3aed;
+}
+.dark[data-tema="ungu"],
+[data-tema="ungu"] .dark,
+.dark [data-tema="ungu"] {
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --ring: #8b5cf6;
+}
+
+/* Jingga: Tangerine Sunset */
+[data-tema="jingga"] {
+  --primary: #ea580c;
+  --primary-foreground: #ffffff;
+  --ring: #ea580c;
+}
+.dark[data-tema="jingga"],
+[data-tema="jingga"] .dark,
+.dark [data-tema="jingga"] {
+  --primary: #f97316;
+  --primary-foreground: #ffffff;
+  --ring: #f97316;
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -344,3 +430,61 @@ main {
   border-top: 2.5px solid var(--border);
   margin-block: 2.5em;
 }
+
+/* Collapsible Toggle Heading (#) */
+details.materi-toggle {
+  margin-top: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+details.materi-toggle summary.materi-toggle-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: var(--foreground);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  transition: opacity 0.15s ease;
+}
+
+details.materi-toggle summary.materi-toggle-summary:hover {
+  opacity: 0.8;
+}
+
+details.materi-toggle summary.materi-toggle-summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Icon chevron > di depan heading */
+details.materi-toggle summary.materi-toggle-summary::before {
+  content: "";
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-top: 3px solid var(--foreground);
+  border-right: 3px solid var(--foreground);
+  transform: rotate(45deg);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  margin-right: 0.2rem;
+}
+
+/* Saat dibuka, icon > berputar ke bawah v */
+details.materi-toggle[open] > summary.materi-toggle-summary::before {
+  transform: rotate(135deg);
+}
+
+details.materi-toggle .materi-toggle-content {
+  margin-top: 0.75rem;
+}
+
+details.materi-toggle .materi-toggle-content > :first-child {
+  margin-top: 0;
+}
+
+

@@ -108,7 +108,7 @@ function preprocessYoutube(isi: string): string {
     /^\s*:::youtube\s+(\S+)\s*$/gm,
     (_cocok, token: string) => {
       const id = token.replace(/^.*(?:v=|youtu\.be\/|embed\/)/, "");
-      return ID_REG.test(id) ? `<div data-youtube="${id}"></div>` : "";
+      return ID_REG.test(id) ? `\n\n<div data-youtube="${id}"></div>\n\n` : "";
     }
   );
 }
@@ -118,6 +118,49 @@ function preprocessGambar(isi: string): string {
     /(!\[[^\]]*\]\()(\s*)(gambar\/[^)\s]+)(\))/g,
     (_c, buka: string, sp: string, alamat: string) => `${buka}${sp}/gambar/${alamat.slice("gambar/".length)}${")"}`
   );
+}
+
+/**
+ * Mengubah setiap bagian `# Heading` menjadi collapsible toggle `<details><summary>`
+ * Bagian sebelum `#` pertama tetap di luar details.
+ */
+function preprocessCollapsibleHeading(isi: string): string {
+  const lines = isi.split(/\r?\n/);
+  const result: string[] = [];
+  let inDetails = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const match = line.match(/^#\s+(.+)$/);
+
+    if (match) {
+      if (inDetails) {
+        result.push("");
+        result.push("</div>");
+        result.push("</details>");
+        result.push("");
+      }
+      // Bersihkan format bold/italic seperti **judul** di summary
+      const rawTitle = match[1].trim();
+      const cleanTitle = rawTitle.replace(/\*\*/g, "").replace(/__/g, "").trim();
+      result.push("");
+      result.push(`<details class="materi-toggle">`);
+      result.push(`<summary class="materi-toggle-summary"><span>${cleanTitle}</span></summary>`);
+      result.push(`<div class="materi-toggle-content">`);
+      result.push("");
+      inDetails = true;
+    } else {
+      result.push(line);
+    }
+  }
+
+  if (inDetails) {
+    result.push("");
+    result.push("</div>");
+    result.push("</details>");
+  }
+
+  return result.join("\n");
 }
 
 export function getSettings(guru: string): Settings {
@@ -311,7 +354,7 @@ export function listMateri(guru: string): MateriMeta[] {
 export function getMateri(
   guru: string,
   slug: string
-): { meta: MateriMeta; blocks: Block[]; raw: string } | null {
+): { meta: MateriMeta; blocks: Block[]; html: string; raw: string } | null {
   const dir = path.join(guruDir(guru), "md");
   if (!fs.existsSync(dir)) return null;
 
@@ -348,7 +391,7 @@ export function getMateri(
   const raw = fs.readFileSync(path.join(dir, targetFile), "utf8");
   const { data, content } = matter(raw);
   const diproses = preprocessGambar(
-    preprocessYoutube(pangkasHeadingPertama(content))
+    preprocessYoutube(preprocessCollapsibleHeading(pangkasHeadingPertama(content)))
   );
   const html = marked.parse(diproses, { async: false }) as string;
   const blocks = pecahBlocks(html);
@@ -367,6 +410,7 @@ export function getMateri(
       pelajaranSlug,
     },
     blocks,
+    html,
     raw,
   };
 }

@@ -10,7 +10,7 @@ export default function SiteHeader() {
           href="/"
           className="group flex min-h-11 min-w-0 items-center gap-2.5 no-underline"
         >
-          <span className="grid size-10 shrink-0 place-items-center rounded-md border-2 border-border bg-primary text-foreground neu-shadow-sm transition-transform duration-150 group-hover:translate-x-0.5 group-hover:translate-y-0.5">
+          <span className="grid size-10 shrink-0 place-items-center rounded-md border-2 border-border bg-primary text-primary-foreground neu-shadow-sm transition-transform duration-150 group-hover:translate-x-0.5 group-hover:translate-y-0.5">
             <BookOpen className="size-5 stroke-[2.5]" />
           </span>
           <span className="min-w-0">

@@ -43,7 +43,7 @@ export default async function HalamanPelajaran({ params }: Props) {
         <FadeIn>
           <header className="mt-6 rounded-2xl border-3 border-border bg-card p-6 sm:p-8 neu-shadow-lg">
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded border-2 border-border bg-primary px-2.5 py-0.5 text-xs font-black uppercase text-foreground">
+              <span className="inline-flex items-center gap-1.5 rounded border-2 border-border bg-primary px-2.5 py-0.5 text-xs font-black uppercase text-primary-foreground">
                 <GraduationCap className="size-3.5 stroke-[2.5]" />
                 Pelajaran
               </span>

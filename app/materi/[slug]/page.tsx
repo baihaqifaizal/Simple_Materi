@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Calendar, User } from "lucide-react";
-import { activeGuru, getMateri, getSettings, listMateri, type Block } from "@/lib/content";
+import { activeGuru, getMateri, getSettings, listMateri } from "@/lib/content";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
-import YouTubeEmbed from "@/components/youtube-embed";
+import MateriContent from "@/components/materi-content";
 import { FadeIn } from "@/components/motion";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -28,7 +28,7 @@ export default async function HalamanMateri({ params }: Props) {
   const materi = getMateri(guru, slug);
   if (!materi) notFound();
 
-  const { meta, blocks } = materi;
+  const { meta, html } = materi;
   const s = getSettings(guru);
 
   return (
@@ -46,7 +46,7 @@ export default async function HalamanMateri({ params }: Props) {
         <FadeIn>
           <header className="mt-6 rounded-xl border-3 border-border bg-card p-6 sm:p-8 neu-shadow">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-block rounded border-2 border-border bg-primary px-2.5 py-0.5 text-xs font-black uppercase text-foreground">
+              <span className="inline-block rounded border-2 border-border bg-primary px-2.5 py-0.5 text-xs font-black uppercase text-primary-foreground">
                 <User className="inline size-3.5 mr-1 stroke-[2.5]" />
                 {s.namaGuru}
               </span>
@@ -72,9 +72,7 @@ export default async function HalamanMateri({ params }: Props) {
 
         <FadeIn>
           <article className="prose prose-neutral mt-8 max-w-none dark:prose-invert">
-            {blocks.map((b, i) => (
-              <BlockSatu key={i} block={b} judul={meta.judul} />
-            ))}
+            <MateriContent html={html} judul={meta.judul} />
           </article>
         </FadeIn>
       </main>
@@ -83,9 +81,3 @@ export default async function HalamanMateri({ params }: Props) {
   );
 }
 
-function BlockSatu({ block, judul }: { block: Block; judul?: string }) {
-  if (block.type === "youtube") {
-    return <YouTubeEmbed id={block.id} judul={judul} />;
-  }
-  return <div dangerouslySetInnerHTML={{ __html: block.html }} />;
-}
