@@ -39,8 +39,10 @@ Karena project di Cloudflare Pages hanya 1 yaitu **`simple-materi`**:
 | Video YouTube | Tempel URL-nya di baris sendiri: `https://www.youtube.com/watch?v=KODE` (parameter `&pp=`, `&t=` ikut dibuang). `:::youtube KODE` tetap jalan |
 | Perbesar gambar | Klik/tap gambar di materi → tampil penuh. Tutup lewat tombol X, klik area gelap, atau tombol `Esc` |
 
-Nama file menentukan urutan & alamat: `01-...md` tampil pertama; alamatnya
-`/materi/<nama-tanpa-awalan-angka>/`.
+Nama file mengikuti pola `semester_kelas_pelajaran_materi.md`, misal
+`1_xi_seni_arus-sinyal.md`. Angka semester di awal hanya penanda dan tidak ikut
+ke alamat: file itu tampil di `/materi/xi_seni_arus-sinyal/`.
+Urutan tampil diatur oleh `settings.json`, bukan nama file.
 
 ## Setup sekali (terbit ke domain)
 

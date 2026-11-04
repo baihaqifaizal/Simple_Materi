@@ -57,7 +57,7 @@ function guruDir(guru: string): string {
 }
 
 function stripPrefix(name: string): string {
-  return name.replace(/^(\d+)-/, "");
+  return name.replace(/^(\d+)[-_]/, "");
 }
 
 function fileToSlug(fileName: string): string {
@@ -357,6 +357,33 @@ export function getSettings(guru: string): Settings {
   };
 }
 
+const peringatanMd = new Set<string>();
+
+/** settings.json adalah daftar resmi; file md di luar daftar tidak pernah tampil. */
+function ingatkanMdTakTerdaftar(guru: string, settings: Settings): void {
+  if (!settings.pelajaran || settings.pelajaran.length === 0) return;
+
+  const dir = path.join(guruDir(guru), "md");
+  if (!fs.existsSync(dir)) return;
+
+  const terdaftar = new Set(
+    settings.pelajaran.flatMap((p) => p.materi.map((m) => m.file))
+  );
+  const liar = fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith(".md") && !terdaftar.has(f))
+    .sort();
+
+  if (liar.length === 0) return;
+  const kunci = `${guru}:${liar.join(",")}`;
+  if (peringatanMd.has(kunci)) return;
+
+  peringatanMd.add(kunci);
+  console.warn(
+    `[md] tidak terdaftar di settings.json, jadi tidak tampil di web: ${liar.join(", ")}`
+  );
+}
+
 export type GuruTersedia = { namaGuru: string; subdomain: string };
 
 /** Semua guru (= folder guru/* yang punya settings.json), urut abjad. */
@@ -374,6 +401,7 @@ export function listGuru(): GuruTersedia[] {
 export function listPelajaran(guru: string): PelajaranGroup[] {
   const dir = path.join(guruDir(guru), "md");
   const settings = getSettings(guru);
+  ingatkanMdTakTerdaftar(guru, settings);
 
   if (settings.pelajaran && settings.pelajaran.length > 0) {
     return settings.pelajaran
@@ -506,6 +534,7 @@ export function getMateri(
   if (!fs.existsSync(dir)) return null;
 
   const settings = getSettings(guru);
+  ingatkanMdTakTerdaftar(guru, settings);
   let targetFile: string | undefined;
   let customJudul: string | undefined;
   let pelajaranJudul: string | undefined;

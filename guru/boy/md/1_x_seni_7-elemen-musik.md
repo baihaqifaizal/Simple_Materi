@@ -6,6 +6,7 @@
 
 > “Ketukan yang berulang dan teratur”
 > 
+
 - **Beat (Ketukan):** Denyut teratur dalam musik yang menjadi dasar hitungan, misalnya 1, 2, 3, 4.
 - **Tempo:** Kecepatan suatu lagu dimainkan. Diukur dengan satuan **BPM (Beat per Minute)**.
 - **Note Duration (Durasi Not):** Menunjukkan lama atau pendeknya bunyi sebuah not.
@@ -14,12 +15,12 @@
 - **Syncopation (Sinkop):** Penekanan atau aksen yang muncul di tempat yang tidak biasanya mendapat tekanan, sehingga menghasilkan irama yang berbeda.
 - **Rest (Tanda Diam):** Tanda dalam musik yang menunjukkan jeda atau bagian tanpa bunyi.
 
-!image.png
+!4-4.png
 
 - Angka atas = jumlah ketukan dalam satu birama.
 - Angka bawah = nilai not yang menjadi patokan satu ketukan.
 
-!image.png
+!note.png
 
 # Melodi
 
@@ -27,12 +28,12 @@
 > 
 - Pitch Range : Rentang nada dari nada terendah ke nada tertinggi.
 
-!image.png
+!melodi.png
 
 - Interval : Jarak antara 2 nada berbeda dalam melodi
 - Scale : Skala kumpulan 7 nada atau lebih yang berhubungan dengan nada dasar/*root note.*
 
-!image.png
+!doremi.png
 
 # Harmoni
 
@@ -49,7 +50,7 @@ Contoh :
 5. dll
 - Chord Progession : Susunan chord yang dipakai secara berurutan dalam suatu lagu, bisa sederhana, bisa kompleks
 
-
+!harmoni.png
 
 # Timbre
 
@@ -78,20 +79,15 @@ Contoh :
     ### Klasifikasi Rentang Nada Instrumen Musik
     
     ### 1. Vokal Pria
-    
     - **Bass** : A1 – F#3 → Suara pria paling rendah.
     - **Bariton** : A2 – A#4 → Suara sedang, antara bass dan tenor.
     - **Tenor** : C#3 – A#5 → Suara tinggi pada pria.
     - **Kontratenor** : G3 – D#6 → Suara sangat tinggi, mirip suara wanita.
-    
     ### 2. Vokal Wanita
-    
     - **Alto** : C3 – C5 → Suara rendah pada wanita.
     - **Mezzo-soprano** : C3 – G#5 → Suara sedang.
     - **Soprano** : A3 – C#7 → Suara tertinggi pada wanita.
-    
     ### 3. Strings (Alat Musik Gesek)
-    
     - **Biola** : G3 – C#7 → Suara terang dan tinggi.
     - **Viola** : C3 – A5 → Suara lebih gelap dari biola.
     - **Cello** : C2 – C#6 → Suara hangat, rendah hingga sedang.
@@ -138,7 +134,6 @@ Tiga bagian, bagian awal diulang setelah bagian tengah.
 Contoh: **“Naik-Naik ke Puncak Gunung”** (A = naik ke puncak gunung, B = tinggi-tinggi sekali, lalu kembali ke A).
 
 ### 3. **Rondo Form (ABACA)**
-
 Bagian utama (A) selalu kembali, diselingi bagian lain.
 
 Contoh: Lagu anak **“Balonku Ada Lima”** → A (Balonku ada lima), B (Rupa-rupa warnanya), kembali A (hijau, kuning, kelabu…).

@@ -13,19 +13,19 @@
       "materi": [
         {
           "judulMateri": "7 Elemen Musik",
-          "file": "seni-x-sem1-7-elemen-musik.md"
+          "file": "1_x_seni_7-elemen-musik.md"
         },
         {
           "judulMateri": "Teknik Dasar Instrumen (Gitar & Piano)",
-          "file": "seni-x-sem1-teknik-dasar-instrumen.md"
+          "file": "1_x_seni_teknik-dasar-instrumen.md"
         },
         {
           "judulMateri": "Teknik Dasar Vokal",
-          "file": "seni-x-sem1-teknik-dasar-vokal.md"
+          "file": "1_x_seni_teknik-dasar-vokal.md"
         },
         {
           "judulMateri": "Ekspresi & Interpretasi Vokal",
-          "file": "seni-x-sem1-ekspresi-interpretasi-vokal.md"
+          "file": "1_x_seni_ekspresi-interpretasi-vokal.md"
         }
       ]
     },
@@ -36,19 +36,19 @@
       "materi": [
         {
           "judulMateri": "Pertunjukan Musik",
-          "file": "seni-x-sem2-pertunjukan-musik.md"
+          "file": "2_x_seni_pertunjukan-musik.md"
         },
         {
           "judulMateri": "Pengorganisasian Pertunjukan",
-          "file": "seni-x-sem2-pengorganisasian-pertunjukan.md"
+          "file": "2_x_seni_pengorganisasian-pertunjukan.md"
         },
         {
           "judulMateri": "Ekspresi & Kreativitas Musik",
-          "file": "seni-x-sem2-ekspresi-kreativitas-musik.md"
+          "file": "2_x_seni_ekspresi-kreativitas-musik.md"
         },
         {
           "judulMateri": "Etika & Apresiasi Musik",
-          "file": "seni-x-sem2-etika-apresiasi-musik.md"
+          "file": "2_x_seni_etika-apresiasi-musik.md"
         }
       ]
     },
@@ -59,23 +59,23 @@
       "materi": [
         {
           "judulMateri": "Fisika & Akustik Suara",
-          "file": "seni-xi-sem1-fisika-akustik-suara.md"
+          "file": "1_xi_seni_fisika-akustik-suara.md"
         },
         {
           "judulMateri": "Arus Sinyal (Signal Flow) dan Kabel",
-          "file": "seni-xi-sem1-arus-sinyal-kabel.md"
+          "file": "1_xi_seni_arus-sinyal.md"
         },
         {
           "judulMateri": "Speaker Aktif & Speaker Pasif",
-          "file": "seni-xi-sem1-speaker-aktif-pasif.md"
+          "file": "1_xi_seni_speaker-aktif-pasif.md"
         },
         {
           "judulMateri": "Mixer Audio & Gain Staging",
-          "file": "seni-xi-sem1-mixer-audio-gain-staging.md"
+          "file": "1_xi_seni_mixer-audio-gain-staging.md"
         },
         {
           "judulMateri": "Setup Audio",
-          "file": "seni-xi-sem1-setup-audio.md"
+          "file": "1_xi_seni_setup-audio.md"
         }
       ]
     },
@@ -86,23 +86,23 @@
       "materi": [
         {
           "judulMateri": "Tradisi Musik Lintas Budaya",
-          "file": "seni-xi-sem2-tradisi-musik-lintas-budaya.md"
+          "file": "2_xi_seni_tradisi-musik-lintas-budaya.md"
         },
         {
           "judulMateri": "Psikologi Musik Terhadap Pendengar",
-          "file": "seni-xi-sem2-psikologi-musik-terhadap-pendengar.md"
+          "file": "2_xi_seni_psikologi-musik-terhadap-pendengar.md"
         },
         {
           "judulMateri": "Musik Tradisional dan Musik Kontemporer",
-          "file": "seni-xi-sem2-musik-tradisional-kontemporer.md"
+          "file": "2_xi_seni_musik-tradisional-kontemporer.md"
         },
         {
           "judulMateri": "Musik, Sejarah dan Budaya",
-          "file": "seni-xi-sem2-musik-sejarah-budaya.md"
+          "file": "2_xi_seni_musik-sejarah-budaya.md"
         },
         {
           "judulMateri": "Musik sebagai Identitas Sosial & Budaya",
-          "file": "seni-xi-sem2-musik-identitas-sosial-budaya.md"
+          "file": "2_xi_seni_musik-identitas-sosial-budaya.md"
         }
       ]
     },
@@ -113,19 +113,19 @@
       "materi": [
         {
           "judulMateri": "Sejarah Genre Musik",
-          "file": "seni-xii-sem1-sejarah-genre-musik.md"
+          "file": "1_xii_seni_sejarah-genre-musik.md"
         },
         {
           "judulMateri": "Genre Musik Dunia",
-          "file": "seni-xii-sem1-genre-musik-dunia.md"
+          "file": "1_xii_seni_genre-musik-dunia.md"
         },
         {
           "judulMateri": "Analisis Musik",
-          "file": "seni-xii-sem1-analisis-musik.md"
+          "file": "1_xii_seni_analisis-musik.md"
         },
         {
           "judulMateri": "Proses Produksi Musik",
-          "file": "seni-xii-sem1-proses-produksi-musik.md"
+          "file": "1_xii_seni_proses-produksi-musik.md"
         }
       ]
     },
@@ -136,15 +136,15 @@
       "materi": [
         {
           "judulMateri": "Ide Kreatif Seni Musik",
-          "file": "seni-xii-sem2-ide-kreatif-seni-musik.md"
+          "file": "2_xii_seni_ide-kreatif-seni-musik.md"
         },
         {
           "judulMateri": "Proses Distribusi Musik",
-          "file": "seni-xii-sem2-proses-distribusi-musik.md"
+          "file": "2_xii_seni_proses-distribusi-musik.md"
         },
         {
           "judulMateri": "Implementasi Seni Musik",
-          "file": "seni-xii-sem2-implementasi-seni-musik.md"
+          "file": "2_xii_seni_implementasi-seni-musik.md"
         }
       ]
     },
@@ -155,23 +155,23 @@
       "materi": [
         {
           "judulMateri": "Berpikir Komputasional",
-          "file": "coding-ai-x-sem1-berpikir-komputasional.md"
+          "file": "1_x_coding-ai_berpikir-komputasional.md"
         },
         {
           "judulMateri": "Merancang Algoritma",
-          "file": "coding-ai-x-sem1-merancang-algoritma.md"
+          "file": "1_x_coding-ai_merancang-algoritma.md"
         },
         {
           "judulMateri": "Logika Dasar Pemrograman",
-          "file": "coding-ai-x-sem1-logika-dasar-pemrograman.md"
+          "file": "1_x_coding-ai_logika-dasar-pemrograman.md"
         },
         {
           "judulMateri": "Struktur Data Array Dan Prosedur/Fungsi",
-          "file": "coding-ai-x-sem1-struktur-data-array-prosedur-fungsi.md"
+          "file": "1_x_coding-ai_struktur-data-array-prosedur-fungsi.md"
         },
         {
           "judulMateri": "Penerapan Logika Berpikir Pada Teknologi Modern",
-          "file": "coding-ai-x-sem1-penerapan-logika-berpikir-teknologi-modern.md"
+          "file": "1_x_coding-ai_penerapan-logika-berpikir-teknologi-modern.md"
         }
       ]
     }

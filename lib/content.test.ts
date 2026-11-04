@@ -108,7 +108,7 @@ describe("listMateri", () => {
   it("mengembalikan materi boy sesuai pelajaran di settings.json", () => {
     const daftar = listMateri("boy");
     expect(daftar.length).toBeGreaterThan(0);
-    expect(daftar[0].slug).toBe("seni-x-sem1-7-elemen-musik");
+    expect(daftar[0].slug).toBe("x_seni_7-elemen-musik");
   });
 
   it("mengembalikan array kosong bila md/ kosong", () => {
@@ -249,5 +249,44 @@ describe("URL YouTube baris sendiri", () => {
       "ccccccccccc",
     ]);
     expect(materi.html).toContain("https://example.com/video");
+  });
+});
+
+describe("peringatan md tak terdaftar", () => {
+  const GURU = "uji-orphan";
+  const dir = path.resolve("guru/uji-orphan");
+
+  beforeAll(() => {
+    fs.mkdirSync(path.join(dir, "md"), { recursive: true });
+    fs.writeFileSync(
+      path.join(dir, "settings.json"),
+      JSON.stringify({
+        namaGuru: "Uji Orphan",
+        pelajaran: [
+          {
+            judul: "Pelajaran Uji",
+            materi: [{ judulMateri: "Terdaftar", file: "01-terdaftar.md" }],
+          },
+        ],
+      }),
+      "utf8"
+    );
+    fs.writeFileSync(path.join(dir, "md", "01-terdaftar.md"), "# Terdaftar", "utf8");
+    fs.writeFileSync(path.join(dir, "md", "liar.md"), "# Liar", "utf8");
+  });
+
+  afterAll(() => {
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  it("memberi tahu file md yang tidak terdaftar di settings.json", () => {
+    const diam = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      getMateri(GURU, "terdaftar");
+      const pesan = diam.mock.calls.flat().join(" ");
+      expect(pesan).toContain("liar.md");
+    } finally {
+      diam.mockRestore();
+    }
   });
 });
