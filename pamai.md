@@ -57,8 +57,8 @@ Catatan: domain sudah dikonfirmasi — `manurhidma.my.id`, subdomain guru: `boy.
 | Kebutuhan | Cara di MD (usulan, masih bisa diubah) |
 |---|---|
 | Materi biasa | Markdown standar: heading, list, tabel, blok kode, kutipan |
-| **Insert gambar** | `![deskripsi](gambar/foto.png)` — file cukup ditaruh di `guru/boy/gambar/` |
-| **Insert video YouTube** | Baris khusus, misal `:::youtube dQw4w9WgXcQ` → embed iframe lazily-loaded (thumbnail dulu, iframe baru nyala saat diklik) |
+| **Insert gambar** | `!foto.png` (baris sendiri) — file cukup ditaruh di `guru/boy/gambar/`. Format lama `![deskripsi](gambar/foto.png)` tetap jalan |
+| **Insert video YouTube** | Tempel URL YouTube di baris sendiri, misal `https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=...` → embed iframe lazily-loaded (thumbnail dulu, iframe baru nyala saat diklik). `:::youtube dQw4w9WgXcQ` tetap jalan |
 | Gambar ikut ter-deploy | Saat build, `gambar/` di-copy ke situs |
 
 ## 6. Firebase / Hosting

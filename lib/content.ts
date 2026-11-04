@@ -103,20 +103,167 @@ function ringkasanDariDokumen(isi: string): string {
 }
 
 /** :::youtube <id-or-url> → div token; id tak valid dibuang tanpa jejak. */
+function idDariUrlYoutube(teks: string): string | null {
+  let url: URL;
+  try {
+    url = new URL(teks.trim());
+  } catch {
+    return null;
+  }
+  if (url.protocol !== "http:" && url.protocol !== "https:") return null;
+
+  const host = url.hostname.toLowerCase().replace(/^www\./, "");
+  if (
+    !["youtube.com", "m.youtube.com", "music.youtube.com", "youtu.be", "youtube-nocookie.com"].includes(
+      host
+    )
+  ) {
+    return null;
+  }
+
+  let id: string | null = null;
+  if (host === "youtu.be") {
+    id = url.pathname.split("/").filter(Boolean)[0] ?? null;
+  } else if (url.pathname === "/watch") {
+    id = url.searchParams.get("v");
+  } else {
+    const cocok = url.pathname.match(/^\/(?:shorts|embed|live|v)\/([^/]+)/);
+    id = cocok ? cocok[1] : null;
+  }
+
+  return id && ID_REG.test(id) ? id : null;
+}
+
+function ambilIdYoutube(token: string): string | null {
+  const bersih = token.trim();
+  if (/^https?:\/\//i.test(bersih)) return idDariUrlYoutube(bersih);
+  const id = bersih.replace(/^.*(?:v=|youtu\.be\/|embed\/)/, "");
+  return ID_REG.test(id) ? id : null;
+}
+
 function preprocessYoutube(isi: string): string {
-  return isi.replace(
+  const denganDirective = isi.replace(
     /^\s*:::youtube\s+(\S+)\s*$/gm,
     (_cocok, token: string) => {
-      const id = token.replace(/^.*(?:v=|youtu\.be\/|embed\/)/, "");
-      return ID_REG.test(id) ? `\n\n<div data-youtube="${id}"></div>\n\n` : "";
+      const id = ambilIdYoutube(token);
+      return id ? `\n\n<div data-youtube="${id}"></div>\n\n` : "";
+    }
+  );
+
+  // URL YouTube biasa, hanya bila berdiri sendiri di satu baris.
+  return denganDirective.replace(
+    /^[ \t]*(https?:\/\/\S+)[ \t]*$/gm,
+    (cocok, tautan: string) => {
+      const id = idDariUrlYoutube(tautan);
+      return id ? `\n\n<div data-youtube="${id}"></div>\n\n` : cocok;
+    }
+  );
+}
+
+const EXT_GAMBAR = /^\.(?:jpe?g|png|gif|webp|svg|avif)$/i;
+const POLA_GAMBAR_RINGKAS =
+  /^([ \t]*(?:[-*+]\s+|\d+\.\s+)?)!([^\n]+?)\.(jpe?g|png|gif|webp|svg|avif)[ \t]*$/gim;
+const peringatanGambar = new Set<string>();
+
+function escapeHtml(teks: string): string {
+  return teks
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** Encode path per segmen; jangan double-encode nama yang sudah ber-%20. */
+function encodeAlamat(alamat: string): string {
+  return alamat
+    .split("/")
+    .map((bagian) => {
+      try {
+        return encodeURIComponent(decodeURIComponent(bagian));
+      } catch {
+        return encodeURIComponent(bagian);
+      }
+    })
+    .join("/");
+}
+
+function daftarGambar(guru: string): string[] {
+  const akar = path.join(guruDir(guru), "gambar");
+  if (!fs.existsSync(akar)) return [];
+
+  const hasil: string[] = [];
+  const telusuri = (dir: string, rel: string) => {
+    for (const entri of fs.readdirSync(dir, { withFileTypes: true })) {
+      const relBaru = rel ? `${rel}/${entri.name}` : entri.name;
+      if (entri.isDirectory()) telusuri(path.join(dir, entri.name), relBaru);
+      else hasil.push(relBaru);
+    }
+  };
+  telusuri(akar, "");
+  return hasil;
+}
+
+/** Cari di guru/<guru>/gambar saja: persis → jpg/jpeg setara → ekstensi apa pun. */
+function cariGambar(guru: string, nama: string): string | null {
+  const kandidat = nama.replace(/\\/g, "/").replace(/^\/+/, "").toLowerCase();
+  const daftar = daftarGambar(guru);
+
+  const persis = daftar.find((f) => f.toLowerCase() === kandidat);
+  if (persis) return persis;
+
+  const ekstensi = path.posix.extname(kandidat);
+  if (!EXT_GAMBAR.test(ekstensi)) return null;
+  const dasar = kandidat.slice(0, -ekstensi.length);
+
+  const pasangan =
+    ekstensi === ".jpg" ? ".jpeg" : ekstensi === ".jpeg" ? ".jpg" : null;
+  if (pasangan) {
+    const ketemu = daftar.find((f) => f.toLowerCase() === dasar + pasangan);
+    if (ketemu) return ketemu;
+  }
+
+  return (
+    daftar.find((f) => {
+      const kecil = f.toLowerCase();
+      const ek = path.posix.extname(kecil);
+      return EXT_GAMBAR.test(ek) && kecil.slice(0, -ek.length) === dasar;
+    }) ?? null
+  );
+}
+
+/** !nama.ext (satu baris) → <img> dari guru/<guru>/gambar. */
+function preprocessGambarRingkas(isi: string, guru: string): string {
+  return isi.replace(
+    POLA_GAMBAR_RINGKAS,
+    (cocok, awalan: string, nama: string, ekstensi: string) => {
+      const lengkap = `${nama}.${ekstensi}`;
+      const ketemu = cariGambar(guru, lengkap);
+      if (!ketemu) {
+        const kunci = `${guru}/${lengkap.toLowerCase()}`;
+        if (!peringatanGambar.has(kunci)) {
+          peringatanGambar.add(kunci);
+          console.warn(
+            `[gambar] tidak ditemukan: guru/${guru}/gambar/${lengkap}`
+          );
+        }
+        return cocok;
+      }
+
+      const alt = escapeHtml(
+        path.posix.basename(ketemu, path.posix.extname(ketemu))
+      );
+      return `${awalan}<img src="/gambar/${encodeAlamat(ketemu)}" alt="${alt}">`;
     }
   );
 }
 
 function preprocessGambar(isi: string): string {
   return isi.replace(
-    /(!\[[^\]]*\]\()(\s*)(gambar\/[^)\s]+)(\))/g,
-    (_c, buka: string, sp: string, alamat: string) => `${buka}${sp}/gambar/${alamat.slice("gambar/".length)}${")"}`
+    /(!\[[^\]]*\]\()\s*(gambar\/[^)]+?)\s*(\))/g,
+    (_cocok, buka: string, alamat: string) => {
+      const bersih = alamat.trim();
+      return `${buka}/gambar/${encodeAlamat(bersih.slice("gambar/".length))})`;
+    }
   );
 }
 
@@ -391,7 +538,10 @@ export function getMateri(
   const raw = fs.readFileSync(path.join(dir, targetFile), "utf8");
   const { data, content } = matter(raw);
   const diproses = preprocessGambar(
-    preprocessYoutube(preprocessCollapsibleHeading(pangkasHeadingPertama(content)))
+    preprocessGambarRingkas(
+      preprocessYoutube(preprocessCollapsibleHeading(pangkasHeadingPertama(content))),
+      guru
+    )
   );
   const html = marked.parse(diproses, { async: false }) as string;
   const blocks = pecahBlocks(html);

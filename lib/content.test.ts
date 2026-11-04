@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import { listMateri, getMateri, getSettings, listGuru } from "./content";
@@ -7,6 +7,8 @@ import { listMateri, getMateri, getSettings, listGuru } from "./content";
 const TMP = {
   anomali: path.resolve("guru/anomali"),
   kosong: path.resolve("guru/kosong"),
+  konten: path.resolve("guru/uji-konten"),
+  sintaks: path.resolve("guru/uji-sintaks"),
 };
 
 function mkGuruDir(name: string, mdContents: Record<string, string>) {
@@ -16,16 +18,90 @@ function mkGuruDir(name: string, mdContents: Record<string, string>) {
   }
 }
 
+function mkGambar(guru: string, files: Record<string, string>) {
+  for (const [file, isi] of Object.entries(files)) {
+    const target = path.join(guru, "gambar", file);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, isi, "utf8");
+  }
+}
+
 beforeAll(() => {
   mkGuruDir(TMP.anomali, {
     "01-x.md": "Halaman awal\n\n:::youtube aBc=99|xx\n",
   });
   mkGuruDir(TMP.kosong, {});
+
+  mkGuruDir(TMP.konten, {
+    "01-sistem-tata-surya.md": [
+      "---",
+      "judul: Sistem Tata Surya",
+      "tanggal: 2026-01-02",
+      "ringkasan: Pengenalan matahari dan planet.",
+      "---",
+      "",
+      "# Sistem Tata Surya",
+      "",
+      "Matahari adalah pusat tata surya.",
+      "",
+      "![tata surya](gambar/sistem-tata-surya.svg)",
+      "",
+      ":::youtube dQw4w9WgXcQ",
+      "",
+      "Materi selesai.",
+      "",
+    ].join("\n"),
+    "02-siapa-pak-boy.md": "# Siapa Pak Boy\n\nGuru seni musik.",
+  });
+  fs.writeFileSync(
+    path.join(TMP.konten, "settings.json"),
+    JSON.stringify({ namaGuru: "Uji Konten" }),
+    "utf8"
+  );
+  mkGambar(TMP.konten, { "sistem-tata-surya.svg": "<svg/>" });
+
+  mkGuruDir(TMP.sintaks, {
+    "01-gambar.md": [
+      "!Musik Teori.jpg",
+      "",
+      "!note.png",
+      "",
+      "!hilang.png",
+      "",
+      "- !sub/foto.svg",
+      "",
+    ].join("\n"),
+    "02-gambar-lama.md": "![musik](gambar/Musik Teori.jpeg)\n",
+    "03-youtube.md": [
+      "https://www.youtube.com/watch?v=J2aoEWRyb5Y&pp=ygULY2hlc3Qgdm9pY2U%3D",
+      "",
+      "https://youtu.be/aaaaaaaaaaa",
+      "",
+      "https://www.youtube.com/shorts/bbbbbbbbbbb",
+      "",
+      "https://example.com/video",
+      "",
+      ":::youtube https://youtu.be/ccccccccccc?t=10",
+      "",
+    ].join("\n"),
+  });
+  fs.writeFileSync(
+    path.join(TMP.sintaks, "settings.json"),
+    JSON.stringify({ namaGuru: "Uji Sintaks" }),
+    "utf8"
+  );
+  mkGambar(TMP.sintaks, {
+    "Musik Teori.jpeg": "jpeg",
+    "note.png": "png",
+    "sub/foto.svg": "<svg/>",
+  });
 });
 
 afterAll(() => {
   fs.rmSync(TMP.anomali, { recursive: true, force: true });
   fs.rmSync(TMP.kosong, { recursive: true, force: true });
+  fs.rmSync(TMP.konten, { recursive: true, force: true });
+  fs.rmSync(TMP.sintaks, { recursive: true, force: true });
 });
 
 describe("listMateri", () => {
@@ -42,19 +118,19 @@ describe("listMateri", () => {
 
 describe("getMateri", () => {
   it("judul diambil dari frontmatter bila ada", () => {
-    const materi = getMateri("boy", "sistem-tata-surya");
+    const materi = getMateri("uji-konten", "sistem-tata-surya");
     expect(materi?.meta.judul).toBe("Sistem Tata Surya");
     expect(materi?.meta.tanggal).not.toBeNull();
     expect(materi?.meta.ringkasan).toContain("Pengenalan matahari");
   });
 
   it("tanpa frontmatter: judul dari heading pertama", () => {
-    const materi = getMateri("boy", "siapa-pak-boy");
+    const materi = getMateri("uji-konten", "siapa-pak-boy");
     expect(materi?.meta.judul).toBe("Siapa Pak Boy");
   });
 
   it("materi 01 punya 1 block youtube + minimal 2 block html", () => {
-    const materi = getMateri("boy", "sistem-tata-surya")!;
+    const materi = getMateri("uji-konten", "sistem-tata-surya")!;
     const youtube = materi.blocks.filter((b) => b.type === "youtube");
     const html = materi.blocks.filter((b) => b.type === "html");
     expect(youtube).toHaveLength(1);
@@ -63,7 +139,7 @@ describe("getMateri", () => {
   });
 
   it("path gambar di-rewrite ke /gambar/...", () => {
-    const materi = getMateri("boy", "sistem-tata-surya")!;
+    const materi = getMateri("uji-konten", "sistem-tata-surya")!;
     const semuaHtml = materi.blocks
       .map((b) => (b.type === "html" ? b.html : ""))
       .join("");
@@ -82,7 +158,7 @@ describe("getMateri", () => {
 
   it("heading # pertama tidak dobel: tidak muncul di blok html", () => {
     for (const slug of ["sistem-tata-surya", "siapa-pak-boy"]) {
-      const materi = getMateri("boy", slug)!;
+      const materi = getMateri("uji-konten", slug)!;
       const semua = materi.blocks
         .map((b) => (b.type === "html" ? b.html : ""))
         .join("");
@@ -122,5 +198,56 @@ describe("getSettings", () => {
     const s = getSettings("anonim");
     expect(s.namaGuru).toBe("anonim");
     expect(s.judulSitus).toBe("anonim");
+  });
+});
+
+describe("sintaks gambar ringkas", () => {
+  let diam: ReturnType<typeof vi.spyOn>;
+
+  beforeAll(() => {
+    diam = vi.spyOn(console, "warn").mockImplementation(() => {});
+  });
+
+  afterAll(() => {
+    diam.mockRestore();
+  });
+
+  it("!nama.jpg menemukan file .jpeg dan men-encode spasi", () => {
+    const html = getMateri("uji-sintaks", "gambar")!.html;
+    expect(html).toContain('src="/gambar/Musik%20Teori.jpeg"');
+    expect(html).toContain('alt="Musik Teori"');
+  });
+
+  it("nama persis dan subfolder dipakai apa adanya", () => {
+    const html = getMateri("uji-sintaks", "gambar")!.html;
+    expect(html).toContain('src="/gambar/note.png"');
+    expect(html).toContain('src="/gambar/sub/foto.svg"');
+    expect(html).toContain('alt="foto"');
+  });
+
+  it("gambar yang tidak ada dibiarkan sebagai teks", () => {
+    const html = getMateri("uji-sintaks", "gambar")!.html;
+    expect(html).toContain("!hilang.png");
+  });
+
+  it("format lama dengan path berspasi tetap jadi /gambar/...", () => {
+    const html = getMateri("uji-sintaks", "gambar-lama")!.html;
+    expect(html).toContain('src="/gambar/Musik%20Teori.jpeg"');
+  });
+});
+
+describe("URL YouTube baris sendiri", () => {
+  it("URL watch dengan parameter jadi block youtube, URL lain tetap link", () => {
+    const materi = getMateri("uji-sintaks", "youtube")!;
+    const ids = materi.blocks
+      .filter((b) => b.type === "youtube")
+      .map((b) => b.id);
+    expect(ids).toEqual([
+      "J2aoEWRyb5Y",
+      "aaaaaaaaaaa",
+      "bbbbbbbbbbb",
+      "ccccccccccc",
+    ]);
+    expect(materi.html).toContain("https://example.com/video");
   });
 });
