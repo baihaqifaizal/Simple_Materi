@@ -66,12 +66,19 @@ beforeAll(() => {
       "",
       "!note.png",
       "",
+      "!foto.webp",
+      "",
       "!hilang.png",
       "",
       "- !sub/foto.svg",
       "",
     ].join("\n"),
-    "02-gambar-lama.md": "![musik](gambar/Musik Teori.jpeg)\n",
+    "02-gambar-lama.md": [
+      "![musik](gambar/Musik Teori.jpeg)",
+      "",
+      "![webp](gambar/foto.webp)",
+      "",
+    ].join("\n"),
     "03-youtube.md": [
       "https://www.youtube.com/watch?v=J2aoEWRyb5Y&pp=ygULY2hlc3Qgdm9pY2U%3D",
       "",
@@ -93,6 +100,7 @@ beforeAll(() => {
   mkGambar(TMP.sintaks, {
     "Musik Teori.jpeg": "jpeg",
     "note.png": "png",
+    "foto.webp": "webp",
     "sub/foto.svg": "<svg/>",
   });
 });
@@ -223,6 +231,17 @@ describe("sintaks gambar ringkas", () => {
     expect(html).toContain('src="/gambar/note.png"');
     expect(html).toContain('src="/gambar/sub/foto.svg"');
     expect(html).toContain('alt="foto"');
+  });
+
+  it("!nama.webp tampil sama seperti jpg/png", () => {
+    const html = getMateri("uji-sintaks", "gambar")!.html;
+    expect(html).toContain('src="/gambar/foto.webp"');
+    expect(html).toContain('alt="foto"');
+  });
+
+  it("format lama dengan path .webp juga di-rewrite", () => {
+    const html = getMateri("uji-sintaks", "gambar-lama")!.html;
+    expect(html).toContain('src="/gambar/foto.webp"');
   });
 
   it("gambar yang tidak ada dibiarkan sebagai teks", () => {

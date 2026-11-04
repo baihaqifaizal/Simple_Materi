@@ -35,7 +35,7 @@ Karena project di Cloudflare Pages hanya 1 yaitu **`simple-materi`**:
 | Kebutuhan  | Cara menulis                                                            |
 | ---------- | ----------------------------------------------------------------------- |
 | Judul & tanggal | Baris teratas file (frontmatter): `judul:` / `tanggal:` / `ringkasan:` |
-| Gambar     | `!foto.png` — baris sendiri, file di `guru/<nama>/gambar/`. Nama dasar dicocokkan, jadi `!foto.jpg` tetap menemukan `foto.jpeg`. Format lama `![keterangan](gambar/foto.png)` masih jalan |
+| Gambar     | `!foto.png` — baris sendiri, file di `guru/<nama>/gambar/`. Format: `jpg`, `jpeg`, `png`, `webp`, `gif`, `svg`, `avif`. Nama dasar dicocokkan, jadi `!foto.jpg` tetap menemukan `foto.jpeg`. Format lama `![keterangan](gambar/foto.png)` masih jalan |
 | Video YouTube | Tempel URL-nya di baris sendiri: `https://www.youtube.com/watch?v=KODE` (parameter `&pp=`, `&t=` ikut dibuang). `:::youtube KODE` tetap jalan |
 | Perbesar gambar | Klik/tap gambar di materi → tampil penuh. Tutup lewat tombol X, klik area gelap, atau tombol `Esc` |
 
