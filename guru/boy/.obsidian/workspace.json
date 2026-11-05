@@ -1,0 +1,217 @@
+{
+  "main": {
+    "id": "1b7589e80b276641",
+    "type": "split",
+    "children": [
+      {
+        "id": "df81498380845c35",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "901623d242282ecf",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "md/1_xi_seni_arus-sinyal.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "1_xi_seni_arus-sinyal"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "e1504a343fb9d44b",
+    "type": "split",
+    "children": [
+      {
+        "id": "f5e90ce586b48c00",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8e77ebf082836eaf",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "2183843202a4abfe",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "a251540bde87b221",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "91a692107412ad4d",
+    "type": "split",
+    "children": [
+      {
+        "id": "d9a968c6aceadf24",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "06c9643c31fb581b",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "md/1_x_seni_ekspresi-interpretasi-vokal.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "50d0c7696d26dadf",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "md/1_x_seni_ekspresi-interpretasi-vokal.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "4f087ac68f550488",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "58c6bc13bcb47723",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "27739f2ddf1af354",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "md/1_x_seni_ekspresi-interpretasi-vokal.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "youtube-native:Open YouTube panel": false
+    }
+  },
+  "active": "901623d242282ecf",
+  "lastOpenFiles": [
+    "md/1_xi_seni_fisika-akustik-suara.md",
+    "gambar/kabel-ax.png",
+    "gambar/aux-image.png",
+    "md/1_xi_seni_mixer-audio-gain-staging.md",
+    "md/1_xi_seni_arus-sinyal.md",
+    "md/1_xi_seni_speaker-aktif-pasif.md",
+    "md/1_xii_informatika_desain-aplikasi-web.md",
+    "md/1_xii_informatika_sejarah-teknologi.md",
+    "md/1_xii_informatika_sistem-komputer.md",
+    "md/1_xii_informatika_sistem-operasi.md",
+    "md/1_xii_seni_analisis-musik.md",
+    "md/1_xii_seni_genre-musik-dunia.md",
+    "md/1_xii_seni_proses-produksi-musik.md",
+    "md/1_xii_seni_sejarah-genre-musik.md",
+    "md/2_x_seni_pengorganisasian-pertunjukan.md",
+    "md/2_x_seni_etika-apresiasi-musik.md",
+    "md/2_x_seni_ekspresi-kreativitas-musik.md",
+    "md/1_xi_seni_setup-audio.md",
+    "md/1_x_seni_ekspresi-interpretasi-vokal.md",
+    "md/1_x_seni_7-elemen-musik.md",
+    "md/1_x_seni_teknik-dasar-instrumen.md",
+    "md/1_x_coding-ai_berpikir-komputasional.md"
+  ]
+}

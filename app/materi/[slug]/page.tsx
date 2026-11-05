@@ -5,6 +5,7 @@ import { activeGuru, getMateri, getSettings, listMateri } from "@/lib/content";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import MateriContent from "@/components/materi-content";
+import FloatingBackButton from "@/components/floating-back-button";
 import { FadeIn } from "@/components/motion";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -35,13 +36,10 @@ export default async function HalamanMateri({ params }: Props) {
     <div className="flex min-h-dvh flex-col bg-background text-foreground">
       <SiteHeader />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 pt-6 pb-16 sm:px-6 sm:pt-8">
-        <Link
+        <FloatingBackButton
           href={meta.pelajaranSlug ? `/pelajaran/${meta.pelajaranSlug}` : "/"}
-          className="neu-btn inline-flex min-h-11 items-center gap-2 rounded-md bg-card px-4 py-2 text-xs font-black uppercase text-foreground no-underline"
-        >
-          <ArrowLeft className="size-4 stroke-[2.5]" />
-          {meta.pelajaranJudul ? `Kembali ke ${meta.pelajaranJudul}` : "Kembali"}
-        </Link>
+          label={meta.pelajaranJudul ? `Kembali ke ${meta.pelajaranJudul}` : "Kembali"}
+        />
 
         <FadeIn>
           <header className="mt-6 rounded-xl border-3 border-border bg-card p-6 sm:p-8 neu-shadow">
@@ -61,12 +59,6 @@ export default async function HalamanMateri({ params }: Props) {
             <h1 className="mt-4 text-[clamp(1.85rem,5.5vw,2.75rem)] font-black leading-[1.1] tracking-tight text-foreground">
               {meta.judul}
             </h1>
-
-            {meta.ringkasan ? (
-              <p className="mt-3 text-base sm:text-lg font-medium leading-relaxed text-muted-foreground">
-                {meta.ringkasan}
-              </p>
-            ) : null}
           </header>
         </FadeIn>
 

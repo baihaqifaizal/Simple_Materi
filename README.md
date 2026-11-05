@@ -20,6 +20,14 @@ guru/
      - `.\build.ps1 -Deploy` — otomatis build seluruh folder guru sekaligus & deploy ke Cloudflare project `simple-materi`.
      - `.\build.ps1 -Target boy -Watch` — mode live preview materi lokal di http://localhost:3000
 
+### Menambah materi baru lewat prompt
+
+Buka `prompt-tambah-materi.md`, salin seluruh isinya ke AI agent yang punya akses file ke repo, lalu beri perintah. Contoh:
+
+> Masukan materi Tata Suara Panggung untuk kelas XI semester 2 pelajaran Seni.
+
+Prompt akan membuat file `.md` kosong dengan nama yang benar dan mendaftarkannya di `guru/<nama>/settings.json`. Isi materi tetap ditulis terpisah.
+
 ## Setup Kustom Domain di Cloudflare Pages (Cukup Sekali di Awal)
 
 Karena project di Cloudflare Pages hanya 1 yaitu **`simple-materi`**:

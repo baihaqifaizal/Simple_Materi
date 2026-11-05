@@ -30,7 +30,7 @@ Urutan nada standar:
 
 *Latihan: buka aplikasi tuner, petik senar, lalu putar kunci senar sampai jarum menunjukkan nada yang benar.*
 
-!image.png
+!tuner.png
 
 ## 3. Teknik Dasar Memetik / Strumming
 
@@ -45,7 +45,7 @@ Chord adalah kombinasi beberapa nada yang dimainkan bersamaan.
 
 Chord dasar yang harus dikuasai:
 
-!011840400_1627986662-20201011184932-1-9-macam-kunci-gitar-dasar-bagi-pemula-mudah-dipraktikkan-001-ayu-isti.webp
+!chords.webp
 
 *Latihan: coba tekan satu per satu chord lalu petik senar dari atas ke bawah.*
 
@@ -91,6 +91,7 @@ Setelah mempelajari materi ini, siswa diharapkan dapat:
 
 ## 1. Mengenal Piano
 
+!doremi.png
 Piano adalah alat musik dengan tuts (kunci).
 
 - Tuts putih = nada utama (do–re–mi).

@@ -310,6 +310,50 @@ function preprocessCollapsibleHeading(isi: string): string {
   return result.join("\n");
 }
 
+/** Menangani baris berindentasi tab atau spasi di bawah list item (gaya Obsidian) */
+function preprocessObsidianTabs(isi: string): string {
+  const lines = isi.split("\n");
+  const result: string[] = [];
+  let inList = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Cek awal list item (-, *, +, atau 1., 2., dst.)
+    if (/^(\s*)[-*+]\s+/.test(line) || /^(\s*)\d+\.\s+/.test(line)) {
+      inList = true;
+      result.push(line);
+    } else if (inList && /^(\t+|(?:  )+)([^\s].*)$/.test(line)) {
+      const match = line.match(/^(\t+|(?:  )+)(.*)$/);
+      if (!match) {
+        result.push(line);
+        continue;
+      }
+      const indentStr = match[1];
+      const content = match[2];
+      const lvl = indentStr.startsWith("\t")
+        ? indentStr.length
+        : Math.max(1, Math.round(indentStr.length / 2));
+
+      // Jika konten itu sendiri adalah list marker, biarkan markdown memproses sebagai sublist
+      if (/^[-*+]\s+/.test(content) || /^\d+\.\s+/.test(content)) {
+        result.push(line);
+      } else {
+        result.push(
+          `<span class="materi-tab-indent lvl-${Math.min(lvl, 4)}">${content}</span>`
+        );
+      }
+    } else {
+      if (line.trim() !== "" && !/^\s+/.test(line)) {
+        inList = false;
+      }
+      result.push(line);
+    }
+  }
+
+  return result.join("\n");
+}
+
 export function getSettings(guru: string): Settings {
   let data: Record<string, unknown> = {};
   try {
@@ -568,7 +612,11 @@ export function getMateri(
   const { data, content } = matter(raw);
   const diproses = preprocessGambar(
     preprocessGambarRingkas(
-      preprocessYoutube(preprocessCollapsibleHeading(pangkasHeadingPertama(content))),
+      preprocessYoutube(
+        preprocessObsidianTabs(
+          preprocessCollapsibleHeading(pangkasHeadingPertama(content))
+        )
+      ),
       guru
     )
   );

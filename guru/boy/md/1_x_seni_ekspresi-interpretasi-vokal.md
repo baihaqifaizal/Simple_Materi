@@ -1,9 +1,7 @@
 Ekspresi dan interpretasi vokal adalah kemampuan seorang penyanyi untuk menyampaikan emosi dan makna lirik dengan sungguh-sungguh, memberikan dimensi artistik yang mendalam pada penampilan mereka. Berikut adalah penjelasan lebih lanjut tentang ekspresi dan interpretasi vokal serta cara untuk mengembangkan keterampilan ini:
 
 # Artikulasi
-
 https://www.youtube.com/watch?v=-dZrHm9ZtVc&pp=ygUVaW5kcmEgYXppeiBhcnRpa3VsYXNp
-
 ### Pengucapan Kata-Kata
 
 Artikulasikan kata-kata dengan jelas dan tepat. Pastikan suara Anda tidak terlalu kabur atau terlalu terang sehingga pendengar dapat dengan mudah memahami pesan lirik.

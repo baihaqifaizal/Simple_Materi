@@ -505,4 +505,57 @@ details.materi-toggle .materi-toggle-content > :first-child {
   margin-top: 0;
 }
 
+/* Obsidian-style List & Tab Indentation */
+article.prose ul,
+article.prose ol {
+  padding-left: 1.25rem;
+}
+
+article.prose li {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+  line-height: 1.6;
+}
+
+/* Tab indentation di bawah poin list item */
+.materi-tab-indent {
+  display: block;
+  margin-top: 0.3rem;
+  margin-bottom: 0.2rem;
+  padding-left: 1.25rem;
+  border-left: 2px solid rgba(0, 0, 0, 0.12);
+  line-height: 1.6;
+}
+
+.dark .materi-tab-indent {
+  border-left-color: rgba(255, 255, 255, 0.15);
+}
+
+.materi-tab-indent.lvl-2 {
+  padding-left: 2.25rem;
+  border-left-width: 3px;
+}
+
+.materi-tab-indent.lvl-3 {
+  padding-left: 3.25rem;
+}
+
+.materi-tab-indent.lvl-4 {
+  padding-left: 4.25rem;
+}
+
+/* Rata Kanan-Kiri (Justify) untuk Semua Konten Materi */
+article.prose {
+  text-align: justify;
+}
+
+article.prose p,
+article.prose li,
+article.prose blockquote {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+
+
 
